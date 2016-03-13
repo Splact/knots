@@ -5,8 +5,7 @@ import Map from '../Map/Map.jsx';
 export default class App extends React.Component {
   render = () => {
     return (
-      <Map
-        options={config.map.options}/>
+      <Map options={config.map.options}/>
     );
   };
 }

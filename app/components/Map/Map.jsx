@@ -19,7 +19,6 @@ export default class Map extends React.Component {
 
   state = {
     center: null,
-    zoom: 3,
     markers: [{
       position: {
         lat: 25.0112183,
@@ -32,7 +31,7 @@ export default class Map extends React.Component {
 
   componentDidMount() {
     geolocation.getCurrentPosition((position) => {
-      console.log('new position');
+      console.log('User position updated.');
       this.setState({
         center: {
           lat: position.coords.latitude,
@@ -41,22 +40,16 @@ export default class Map extends React.Component {
       });
     }, () => {
       this.setState({
-        center: { lat: 60, lng: 105 }
+        center: this.props.options.defaultCenter
       });
     });
   }
 
   render = () => {
-    const {options} = this.props;
+    const { defaultZoom, defaultCenter, ...options } = this.props.options;
 
-    let { center, zoom } = this.state;
+    let { center } = this.state;
     let contents = [];
-
-    if (this.refs.map) {
-      zoom = this.refs.map.getZoom();
-    }
-
-    console.log({ tt:'tt', ...center});
 
     return (
       <ScriptjsLoader
@@ -82,7 +75,8 @@ export default class Map extends React.Component {
         googleMapElement={
           <GoogleMap
             ref={'map'}
-            zoom={zoom}
+            defaultZoom={defaultZoom}
+            defaultCenter={defaultCenter}
             center={center}
             onClick={this.handleMapClick}
             options={options}

@@ -9,7 +9,17 @@ export default {
         lat: 40.8540942,
         lng: 14.1765627
       },
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      allowedBounds: {
+        ne: {
+          lat: 90,
+          lng: 180
+        },
+        sw: {
+          lat: -90,
+          lng: -180
+        }
+      }
     }
   }
 };

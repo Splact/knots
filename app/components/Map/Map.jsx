@@ -30,6 +30,7 @@ export default class Map extends React.Component {
   };
 
   componentDidMount() {
+    // check for gps positioning
     geolocation.getCurrentPosition((position) => {
       console.log('User position updated.');
       this.setState({
@@ -102,33 +103,22 @@ export default class Map extends React.Component {
   handleCenterChanged = () => {
     const center = this.refs.map.getCenter();
     const bounds = this.refs.map.getBounds();
-    const boundsNE = bounds.getNorthEast();
-    const boundsSW = bounds.getSouthWest();
+    const ne = this.props.options.allowedBounds.ne;
+    const sw = this.props.options.allowedBounds.sw;
 
-    // const allowedMaxLng = 165;
-    // const allowedMinLng = -165;
-    const allowedMaxLat = 75;
-    const allowedMinLat = -75;
-    // const boundsMaxLng = boundsNE.lng();
-    // const boundsMinLng = boundsSW.lng();
-    const boundsMaxLat = boundsNE.lat();
-    const boundsMinLat = boundsSW.lat();
-
-    let latDiff = 0;
-    // let lngDiff = 0;
-
-    // if (boundsMinLng < allowedMinLng) { lngDiff = allowedMinLng - boundsMinLng; }
-    // if (boundsMaxLng > allowedMaxLng) { lngDiff = allowedMaxLng - boundsMaxLng; }
-    if (boundsMinLat < allowedMinLat) { latDiff = allowedMinLat - boundsMinLat; }
-    if (boundsMaxLat > allowedMaxLat) { latDiff = allowedMaxLat - boundsMaxLat; }
-
-    if (/*lngDiff ||*/ latDiff) {
-      let lat = center.lat() + latDiff;
-      let lng = center.lng();
+    if ((bounds.getNorthEast().lat() <= ne.lat) && (bounds.getSouthWest().lat() >= sw.lat)) {
       this.setState({
-        center: { lat, lng }
+        center: {
+          lat: center.lat(),
+          lng: center.lng()
+        }
       });
+      return;
     }
+
+    // not valid anymore => return to last valid position
+    this.refs.map.panTo(this.state.center);
+
   };
 
   /*

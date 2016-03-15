@@ -12,12 +12,12 @@ export default {
       disableDefaultUI: true,
       allowedBounds: {
         ne: {
-          lat: 90,
-          lng: 180
+          lat: 85,
+          lng: 175
         },
         sw: {
-          lat: -90,
-          lng: -180
+          lat: -85,
+          lng: -175
         }
       }
     }

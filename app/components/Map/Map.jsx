@@ -3,7 +3,9 @@ import { default as update } from 'react-addons-update';
 import { default as FaSpinner } from 'react-icons/lib/fa/spinner';
 import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsLoader';
 import { GoogleMap, Marker } from 'react-google-maps';
+import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 import { default as canUseDOM } from 'can-use-dom';
+import { markersData } from './fakeData';
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -19,14 +21,7 @@ export default class Map extends React.Component {
 
   state = {
     center: null,
-    markers: [{
-      position: {
-        lat: 25.0112183,
-        lng: 121.52067570000001
-      },
-      key: 'Taiwan',
-      defaultAnimation: 2
-    }]
+    markers: markersData
   };
 
   componentDidMount() {
@@ -49,8 +44,7 @@ export default class Map extends React.Component {
   render = () => {
     const { defaultZoom, defaultCenter, ...options } = this.props.options;
 
-    let { center } = this.state;
-    let contents = [];
+    let { center, markers } = this.state;
 
     return (
       <ScriptjsLoader
@@ -83,15 +77,18 @@ export default class Map extends React.Component {
             options={options}
             onCenterChanged={this.handleCenterChanged}
           >
-            {this.state.markers.map((marker, index) => {
-              return (
+            <MarkerClusterer
+              averageCenter
+              enableRetinaIcons
+              gridSize={ 60 }
+            >
+              {markers.map(marker => (
                 <Marker
-                  {...marker}
-                  onRightclick={this.handleMarkerRightclick.bind(this, index)}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={ marker.id }
                 />
-              );
-            })}
-            {contents}
+              ))}
+           </MarkerClusterer>
           </GoogleMap>
         } />
     );

@@ -15,7 +15,7 @@ const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
   test: path.join(__dirname, 'tests'),
-  style: path.join(__dirname, 'app/style.css')
+  style: path.join(__dirname, 'app/stylesheets/main.scss')
 };
 
 process.env.BABEL_ENV = TARGET;
@@ -41,18 +41,24 @@ const common = {
         include: PATHS.app
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         loaders: ['postcss'],
-        include: PATHS.app
+        include: PATHS.style
       }
     ],
     loaders: [
+      // JSX
       {
         test: /\.jsx?$/,
         loaders: ['babel?cacheDirectory'],
         include: PATHS.app
       },
-      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
+      // Images
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000',
+        include: PATHS.app
+      }
     ]
   },
   plugins: [
@@ -92,10 +98,11 @@ if(TARGET === 'start' || !TARGET) {
     module: {
       loaders: [
         // Define development specific CSS setup
+        // SASS
         {
-          test: /\.css$/,
-          loaders: ['style', 'css'],
-          include: PATHS.app
+          test: /\.scss$/,
+          loader: 'style!css!sass',
+          include: PATHS.style
         }
       ]
     },
@@ -128,8 +135,8 @@ if(TARGET === 'build' || TARGET === 'stats') {
       loaders: [
         // Extract CSS during build
         {
-          test: /\.css$/,
-          loader: ExtractTextPlugin.extract('style', 'css'),
+          test: /\.scss$/,
+          loader: ExtractTextPlugin.extract('style', 'css!sass'),
           include: PATHS.app
         }
       ]

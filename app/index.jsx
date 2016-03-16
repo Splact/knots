@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App.jsx';
+import App from './components/App';
 
 import alt from './libs/alt';
-import storage from './libs/storage';
+import storage from './libs/fakeMarkersStorage';
 import persist from './libs/persist';
 
 persist(alt, storage, 'app');

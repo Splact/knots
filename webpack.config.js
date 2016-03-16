@@ -64,8 +64,8 @@ const common = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'node_modules/html-webpack-template/index.ejs',
-      title: 'Kanban app',
-      appMountId: 'app',
+      title: 'Knots',
+      appMountId: 'knots',
       inject: false
     })
   ],

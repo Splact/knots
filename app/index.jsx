@@ -8,4 +8,4 @@ import persist from './libs/persist';
 
 persist(alt, storage, 'app');
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('knots'));

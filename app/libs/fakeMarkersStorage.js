@@ -1,4 +1,4 @@
-const TOTAL_COUNT = 3;
+const TOTAL_COUNT = 20;
 
 const susolvkaCoords = { lat: 40.8540942, lng: 14.1765627 };
 

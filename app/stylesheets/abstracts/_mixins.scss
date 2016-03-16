@@ -6,3 +6,12 @@
   width: $width;
   height: $height;
 }
+
+/// Helper to set under-developmet background
+/// @author Dario Carella
+/// @param {Color} $color
+@mixin underDevelopment($color: #FFEB00) {
+  background: linear-gradient(to top right, transparent 25%, $color 0, $color 50%, transparent 0, transparent 75%, $color 0);
+  background-size: 42.4px 42.4px;
+}
+

@@ -1,4 +1,9 @@
 export default {
+  facebook: {
+    options: {
+      appId: '239414459735885'
+    }
+  },
   map: {
     // accessToken: 'pk.eyJ1Ijoic3BsYWN0IiwiYSI6ImNpbGxoN2V6dDAwYTJvYmtxb2JvOXdjdnUifQ.tHa07LPKzQ3GCkZDTH_iuw',
     options: {

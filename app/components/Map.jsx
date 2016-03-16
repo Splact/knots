@@ -5,6 +5,7 @@ import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsL
 import { GoogleMap, Marker } from 'react-google-maps';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 import { default as canUseDOM } from 'can-use-dom';
+import classnames from 'classnames';
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -51,6 +52,8 @@ export default class Map extends React.Component {
 
     let { center, markers } = this.state;
 
+    let mapClasses = classnames('map');
+
     return (
       <ScriptjsLoader
         hostname={'maps.googleapis.com'}
@@ -75,6 +78,7 @@ export default class Map extends React.Component {
         googleMapElement={
           <GoogleMap
             ref={'map'}
+            className={mapClasses}
             defaultZoom={defaultZoom}
             defaultCenter={defaultCenter}
             center={center}

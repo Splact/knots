@@ -59,6 +59,7 @@
     "alt-container": "^1.0.2",
     "alt-utils": "^1.0.0",
     "can-use-dom": "^0.1.0",
+    "classnames": "^2.2.3",
     "json-loader": "^0.5.4",
     "libs": "^0.1.2",
     "node-uuid": "^1.4.7",
@@ -69,6 +70,7 @@
     "react-dnd": "^2.1.2",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^0.14.7",
+    "react-facebook-login": "^2.1.2",
     "react-google-maps": "^4.9.1",
     "react-icons": "^1.0.3"
   }

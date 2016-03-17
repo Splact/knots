@@ -5,3 +5,44 @@ body {
   font-weight: $base-font-weight;
   line-height: $base-line-height;
 }
+
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+}
+.h1, .h2 { line-height: 1.1; }
+.h3, .h4 { line-height: 1.3; }
+.h1 { font-size: 400%; letter-spacing: -2px; }
+.h2 { font-size: 250%; letter-spacing: -1px; }
+.h3 { font-size: 200%; }
+.h4 { font-size: 180%; }
+.h5 { font-size: 130%; }
+
+.fixed {
+  font-family: $fixed-font-family;
+  font-size: $fixed-font-size;
+  line-height: $fixed-line-height;
+}
+
+.quiet { color: $quiet-color; }
+.loud  { color: $loud-color; }
+
+.success { color: $success-color; }
+.info { color: $info-color; }
+.warning { color: $warning-color; }
+.error { color: $error-color; }
+
+.italic { font-style: italic; }
+.bold   { font-weight: 700; @extend .loud; }
+
+.block-margins { margin: 1em 0; }
+
+.unordered-list { list-style-type: disc; }
+.ordered-list   { list-style: decimal; }
+
+p, ul, ol, pre { @extend .block-margins; }
+
+ul { @extend .unordered-list; }
+ol { @extend .ordered-list; }
+
+pre, code { @extend .fixed; }

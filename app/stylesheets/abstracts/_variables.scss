@@ -1,8 +1,10 @@
 //== Fonts
 //
 //##
-
-$font-stack: Helvetica, sans-serif;
+$base-font-size: 16px;
+$base-font-family: 'Open Sans', sans-serif;
+$base-font-weight: 400;
+$base-line-height: 1.6;
 
 //== Colors
 //
@@ -10,6 +12,7 @@ $font-stack: Helvetica, sans-serif;
 
 $brand-color: #A8F !default;
 $primary-color: $brand-color;
+$text-color: #444 !default;
 
 
 //== Z-indexes

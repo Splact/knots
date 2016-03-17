@@ -33,7 +33,8 @@ export default class Profile extends React.Component {
       wrapper: classnames('profile'),
       bar: classnames('profile--bar'),
       facebookLogin: classnames('profile--facebook-login'),
-      name: classnames('profile--display-name')
+      name: classnames('profile--display-name'),
+      logoutButton: classnames('button')
     };
 
     if (isLogged) {
@@ -43,6 +44,7 @@ export default class Profile extends React.Component {
             <Avatar url={picture} defaultUrl={defaultPicture}/>
             <span className={styles.name}>{name}</span>
             <button className={styles.logoutButton} onClick={this.logout}>logout</button>
+            <button className={['button button--error']}>asd</button>
           </div>
         </div>
       );

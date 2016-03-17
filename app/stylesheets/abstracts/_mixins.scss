@@ -10,8 +10,42 @@
 /// Helper to set under-developmet background
 /// @author Dario Carella
 /// @param {Color} $color
-@mixin underDevelopment($color: #FFEB00) {
+@mixin under-development($color: #FFEB00) {
   background: linear-gradient(to top right, transparent 25%, $color 0, $color 50%, transparent 0, transparent 75%, $color 0);
   background-size: 42.4px 42.4px;
 }
 
+/// Helper to create a button color
+/// @author Dario Carella
+/// @param {Color} $color
+@mixin button-color($background-color: $primary-color, $border-color: $background-color, $text-color: white, $lined: false) {
+  background: $background-color;
+  border-color: $border-color;
+  color: $text-color;
+
+  @if $lined {
+    $hover-background-color: $border-color;
+    $hover-text-color: white;
+  } @else {
+    $hover-background-color: $background-color;
+    $hover-text-color: $text-color;
+  }
+
+  &:hover,
+  &:focus {
+    $lighten-background-color: lighten($hover-background-color, 5%);
+    $lighten-border-color: lighten($border-color, 5%);
+    background: $lighten-background-color;
+    border-color: $lighten-border-color;
+    color: $hover-text-color;
+  }
+
+  &:active,
+  &.active {
+    $darken-background-color: darken($hover-background-color, 5%);
+    $darken-border-color: darken($border-color, 5%);
+    background: $darken-background-color;
+    border-color: $darken-border-color;
+    color: $hover-text-color;
+  }
+}

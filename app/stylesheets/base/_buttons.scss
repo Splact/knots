@@ -1,0 +1,47 @@
+.button {
+  background: transparent;
+  color: white;
+  border: 3px solid transparent;
+  border-radius: 28px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition: all .25s ease-out;
+
+  outline: none;
+
+  &.button--block {
+    display: block;
+    width: 100%;
+  }
+
+  // sizes
+  &.button--small {
+    padding: .25em .5em;
+    font-size: 14px;
+  }
+  &, &.button-medium {
+    padding: .5em 1em;
+    font-size: 16px;
+  }
+  &.button--big {
+    padding: .75em 1.5em;
+    font-size: 18px;
+  }
+
+  // base colors
+  &, &.button--primary { @include button-color($primary-color); }
+  &.button--success { @include button-color($success-color); }
+  &.button--info { @include button-color($info-color); }
+  &.button--warning { @include button-color($warning-color); }
+  &.button--error { @include button-color($error-color); }
+  // lined colors
+  &.button--primary--lined { @include button-color(transparent, $primary-color, $primary-color, true); }
+  &.button--success--lined { @include button-color(transparent, $success-color, $success-color, true); }
+  &.button--info--lined { @include button-color(transparent, $info-color, $info-color, true); }
+  &.button--warning--lined { @include button-color(transparent, $warning-color, $warning-color, true); }
+  &.button--error--lined { @include button-color(transparent, $error-color, $error-color, true); }
+
+}

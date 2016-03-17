@@ -3,10 +3,10 @@ import classnames from 'classnames';
 
 export default class Profile extends React.Component {
   render = () => {
+    const { url, defaultUrl } = this.props;
 
     let avatarClasses = classnames('profile--avatar');
-    // TODO: get from a store
-    let avatarUrl = 'https://randomuser.me/api/portraits/med/women/78.jpg';
+    let avatarUrl = url || defaultUrl;
 
     return (
       <div className={avatarClasses}>

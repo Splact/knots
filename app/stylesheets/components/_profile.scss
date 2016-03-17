@@ -23,7 +23,7 @@
     display: inline-block;
     border-radius: 50%;
     @include size(56px);
-
+    vertical-align: middle;
     overflow: hidden;
 
     > img {
@@ -55,5 +55,9 @@
     .fa {
       margin-right: 0.35em;
     }
+  }
+
+  .profile--display-name {
+    padding: 1em;
   }
 }

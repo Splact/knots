@@ -1,8 +1,9 @@
 export default {
+  profile: {
+    defaultPicture: 'https://randomuser.me/api/portraits/med/women/78.jpg'
+  },
   facebook: {
-    options: {
-      appId: '239414459735885'
-    }
+    appId: '239414459735885'
   },
   map: {
     // accessToken: 'pk.eyJ1Ijoic3BsYWN0IiwiYSI6ImNpbGxoN2V6dDAwYTJvYmtxb2JvOXdjdnUifQ.tHa07LPKzQ3GCkZDTH_iuw',

@@ -6,6 +6,7 @@ import { GoogleMap, Marker } from 'react-google-maps';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 import { default as canUseDOM } from 'can-use-dom';
 import classnames from 'classnames';
+import ProfileActions from '../actions/ProfileActions';
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -19,26 +20,27 @@ export default class Map extends React.Component {
 
   static version = 22;
 
-  state = {
-    center: null,
-    markers: []
-  };
-
   constructor({markers, ...props}) {
     super(props);
-    console.log(props);
-    this.state.markers = markers;
+
+    this.state = {
+      center: null,
+      markers: markers
+    };
   }
 
   componentDidMount() {
     // check for gps positioning
     geolocation.getCurrentPosition((position) => {
-      console.log('User position updated.');
+      const newPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      ProfileActions.updatePosition(newPosition);
+
       this.setState({
-        center: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
+        center: newPosition
       });
     }, () => {
       this.setState({

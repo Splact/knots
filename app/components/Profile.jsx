@@ -3,10 +3,9 @@ import classnames from 'classnames';
 import Avatar from './Avatar';
 import FacebookLogin from 'react-facebook-login';
 import ProfileActions from '../actions/ProfileActions';
+import ProfileStore from '../stores/ProfileStore';
 
 export default class Profile extends React.Component {
-
-  state = {};
 
   constructor({id, ...props}) {
     super(props);
@@ -17,6 +16,10 @@ export default class Profile extends React.Component {
       this.state = { isLogged: false };
     }
 
+  }
+
+  componentWillMount() {
+    ProfileStore.performFetch();
   }
 
   render = () => {

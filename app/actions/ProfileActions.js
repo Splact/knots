@@ -1,3 +1,11 @@
 import alt from '../libs/alt';
 
-export default alt.generateActions('login', 'logout', 'updatePosition', 'update');
+export default alt.generateActions(
+  'login',
+  'logout',
+  'updatePosition',
+  'fetching',
+  'fetchSuccess',
+  'fetchFailed'
+);
+

@@ -17,8 +17,8 @@ export default class App extends React.Component {
         <AltContainer
           stores={[ProfileStore]}
           inject={{
-            id: () => ProfileStore.getState().profile.id || null,
-            name: () => ProfileStore.getState().profile.name || null,
+            username: () => ProfileStore.getState().profile.username || null,
+            displayName: () => ProfileStore.getState().profile.displayName || null,
             picture: () => ProfileStore.getState().profile.picture || null
           }}
         >

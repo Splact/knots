@@ -24,7 +24,7 @@ export default class Profile extends React.Component {
 
   render = () => {
 
-    const { facebookOptions, defaultPicture, id, name, picture } = this.props;
+    const { facebookOptions, defaultPicture, username, displayName, picture } = this.props;
     const facebookAppId = facebookOptions.appId || null;
     const { isLogged } = this.state;
 
@@ -39,10 +39,10 @@ export default class Profile extends React.Component {
 
     if (isLogged) {
       return (
-        <div className={styles.wrapper} data-id={id}>
+        <div className={styles.wrapper} data-id={username}>
           <div className={styles.bar}>
             <Avatar url={picture} defaultUrl={defaultPicture}/>
-            <span className={styles.name}>{name}</span>
+            <span className={styles.name}>{displayName}</span>
             <button className={styles.logoutButton} onClick={this.logout}>logout</button>
           </div>
         </div>
@@ -53,7 +53,7 @@ export default class Profile extends React.Component {
           <FacebookLogin
             appId={facebookAppId}
             scope={'public_profile'}
-            fields={'name, picture'}
+            fields={'name, picture, gender, age_range, verified'}
             autoLoad={false}
             cssClass={styles.facebookLogin}
             callback={this.responseFacebook}
@@ -65,11 +65,11 @@ export default class Profile extends React.Component {
 
   responseFacebook = (response) => {
     // retrieve relevant data from response
-    const { status, accessToken, id, name, picture } = response;
-    const pictureUrl = picture.data.url || null;
+    const { status, accessToken } = response;
+    console.log(accessToken);
 
     if (!status || status !== 'not authorized') {
-      ProfileActions.login({ id, name, picture: pictureUrl, accessToken });
+      ProfileActions.login(accessToken);
       this.setState({
         isLogged: true
       });

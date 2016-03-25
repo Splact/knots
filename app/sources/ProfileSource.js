@@ -5,7 +5,7 @@ export default {
   performFetch: {
     // remotely fetch profile (required)
     remote() {
-      return axios.get('http://api.arrray.com/m1Jvn01_b'); // TEMP
+      return axios.get('http://api.server.dev:3000/v1/users/fb-10207186630918093'); // TEMP
     },
 
     // this function checks in our local cache first

@@ -1,8 +1,6 @@
 import alt from '../libs/alt';
 import ProfileActions from '../actions/ProfileActions';
-import ProfileSource from '../sources/ProfileSource';
-import { datasource } from 'alt-utils/lib/decorators';
-import axios from 'axios';
+import { webApi, FACEBOOK_LOGIN, CURRENT_USER } from '../libs/webApi';
 
 const defaultProfile = {
   username: null,
@@ -11,67 +9,38 @@ const defaultProfile = {
   bearerToken: null
 };
 
-@datasource(ProfileSource)
 class ProfileStore {
   constructor() {
     this.bindActions(ProfileActions);
 
     this.profile = defaultProfile;
+    this.bearerToken = null;
   }
-
-  fetching = () => {
-    console.log('profile store : fetching');
-  };
-  fetchSuccess = (response) => {
-    this.updateProfile(response.data);
-    console.log(response.data);
-  };
-  fetchFailed = (errorMessage) => {
-    console.log(`profile store : fetchFailed due to "${errorMessage}"`);
-  };
 
   login(accessToken) {
-    axios.post('http://api.server.dev:3000/v1/login/facebook', {
-      'access_token': accessToken
-    }).then((response) => {
-      const { token } = response.data;
-
-      this.updateBearerToken(token);
-
-      return axios({
-        url: 'http://api.server.dev:3000/v1/users/me',
-        method: 'get',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-    }).then((response) => {
-      const { username, displayName, picture, position } = response.data;
-      const profile = { username, displayName, picture, position };
-
-      this.updateProfile(profile);
-    }).catch(function(response) {
-      console.log(response);
-    });
+    webApi(FACEBOOK_LOGIN, { accessToken });
   }
 
-  updateBearerToken(token) {
-    let profile = this.profile;
-    profile.bearerToken = token;
+  updateBearerToken(bearerToken) {
+    if (!bearerToken) {
+      return this.logout();
+    }
 
-    this.setState(profile);
+    if (bearerToken === this.bearerToken) {
+      return false;
+    }
+
+    this.setState({ bearerToken });
+
+    // update profile data
+    webApi(CURRENT_USER, { bearerToken });
   }
 
   updateProfile(newProfile) {
     // TODO: any check and/or ops
 
     const { username, displayName, picture, position } = newProfile;
-    const profile = this.profile;
-
-    profile.username = username;
-    profile.displayName = displayName;
-    profile.picture = picture;
-    profile.position = position;
+    const profile = { username, displayName, picture, position };
 
     this.setState({ profile });
 
@@ -81,7 +50,10 @@ class ProfileStore {
   logout() {
     const profile = defaultProfile;
 
-    this.setState({ profile });
+    this.setState({
+      profile,
+      bearerToken: null
+    });
   }
 
   updatePosition(position) {

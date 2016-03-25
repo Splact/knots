@@ -3,23 +3,18 @@ import classnames from 'classnames';
 import Avatar from './Avatar';
 import FacebookLogin from 'react-facebook-login';
 import ProfileActions from '../actions/ProfileActions';
-import ProfileStore from '../stores/ProfileStore';
 
 export default class Profile extends React.Component {
 
-  constructor({id, ...props}) {
+  constructor({bearerToken, ...props}) {
     super(props);
 
-    if (id) {
-      this.state = { isLogged: true };
+    if (bearerToken) {
+      this.state = { isLogged: true, isLoading: false };
     } else {
-      this.state = { isLogged: false };
+      this.state = { isLogged: false, isLoading: false };
     }
 
-  }
-
-  componentWillMount() {
-    ProfileStore.performFetch();
   }
 
   render = () => {
@@ -39,7 +34,7 @@ export default class Profile extends React.Component {
 
     if (isLogged) {
       return (
-        <div className={styles.wrapper} data-id={username}>
+        <div className={styles.wrapper} data-username={username}>
           <div className={styles.bar}>
             <Avatar url={picture} defaultUrl={defaultPicture}/>
             <span className={styles.name}>{displayName}</span>
@@ -53,7 +48,6 @@ export default class Profile extends React.Component {
           <FacebookLogin
             appId={facebookAppId}
             scope={'public_profile'}
-            fields={'name, picture, gender, age_range, verified'}
             autoLoad={false}
             cssClass={styles.facebookLogin}
             callback={this.responseFacebook}
@@ -66,7 +60,6 @@ export default class Profile extends React.Component {
   responseFacebook = (response) => {
     // retrieve relevant data from response
     const { status, accessToken } = response;
-    console.log(accessToken);
 
     if (!status || status !== 'not authorized') {
       ProfileActions.login(accessToken);

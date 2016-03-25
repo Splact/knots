@@ -1,4 +1,7 @@
 export default {
+  api: {
+    baseURL: 'http://api.server.dev:3000/v1'
+  },
   profile: {
     defaultPicture: 'https://randomuser.me/api/portraits/med/women/78.jpg'
   },

@@ -17,6 +17,13 @@ export default class Profile extends React.Component {
 
   }
 
+  componentWillMount() {
+    const { bearerToken } = this.props;
+    if (bearerToken) {
+      ProfileActions.updateBearerToken(bearerToken);
+    }
+  }
+
   render = () => {
 
     const { facebookOptions, defaultPicture, username, displayName, picture } = this.props;

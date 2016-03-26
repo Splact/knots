@@ -1,12 +1,11 @@
 import alt from '../libs/alt';
 import ProfileActions from '../actions/ProfileActions';
-import { webApi, FACEBOOK_LOGIN, CURRENT_USER } from '../libs/webApi';
+import { webApi, FACEBOOK_LOGIN, CURRENT_USER, UPDATE_USER_POSITION, LOGOUT, UPDATE_BEARERTOKEN } from '../libs/webApi';
 
 const defaultProfile = {
   username: null,
   displayName: null,
-  picture: null,
-  bearerToken: null
+  picture: null
 };
 
 class ProfileStore {
@@ -18,28 +17,24 @@ class ProfileStore {
   }
 
   login(accessToken) {
+    // TODO: set login state loading
     webApi(FACEBOOK_LOGIN, { accessToken });
   }
+  loginSuccess({ token }) {
+    this.setState({ bearerToken: token });
+    // TODO: set login state loaded
 
-  updateBearerToken(bearerToken) {
-    if (!bearerToken) {
-      return this.logout();
-    }
-
-    if (bearerToken === this.bearerToken) {
-      return false;
-    }
-
-    this.setState({ bearerToken });
-
-    // update profile data
-    webApi(CURRENT_USER, { bearerToken });
+    this.updateBearerToken(token);
+    this.fetchUser();
   }
 
-  updateProfile(newProfile) {
+  fetchUser() {
+    // request current user data from webApi
+    webApi(CURRENT_USER);
+  }
+  fetchUserSuccess({ username, displayName, picture, position }) {
     // TODO: any check and/or ops
 
-    const { username, displayName, picture, position } = newProfile;
     const profile = { username, displayName, picture, position };
 
     this.setState({ profile });
@@ -50,6 +45,8 @@ class ProfileStore {
   logout() {
     const profile = defaultProfile;
 
+    webApi(LOGOUT);
+
     this.setState({
       profile,
       bearerToken: null
@@ -57,10 +54,18 @@ class ProfileStore {
   }
 
   updatePosition(position) {
+    // TODO: set position state loading
+    webApi(UPDATE_USER_POSITION, { position });
+  }
+  updatePositionSuccess(position) {
     let profile = this.profile;
     profile.position = position;
-
+    // TODO: set position state loaded
     this.setState({ profile });
+  }
+
+  updateBearerToken(bearerToken) {
+    webApi(UPDATE_BEARERTOKEN, { bearerToken });
   }
 }
 

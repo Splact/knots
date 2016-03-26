@@ -2,12 +2,12 @@ import alt from '../libs/alt';
 
 export default alt.generateActions(
   'login',
+  'loginSuccess',
   'logout',
   'updatePosition',
-  'updateBearerToken',
-  'updateProfile',
-  'fetching',
-  'fetchSuccess',
-  'fetchFailed'
+  'updatePositionSuccess',
+  'fetchUser',
+  'fetchUserSuccess',
+  'updateBearerToken'
 );
 

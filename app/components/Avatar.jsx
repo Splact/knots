@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-export default class Profile extends React.Component {
+export default class Avatar extends React.Component {
   render = () => {
     const { url, defaultUrl } = this.props;
 

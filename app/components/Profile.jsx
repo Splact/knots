@@ -6,20 +6,16 @@ import ProfileActions from '../actions/ProfileActions';
 
 export default class Profile extends React.Component {
 
-  constructor({bearerToken, ...props}) {
-    super(props);
-
-    if (bearerToken) {
-      this.state = { isLogged: true, isLoading: false };
-    } else {
-      this.state = { isLogged: false, isLoading: false };
-    }
-
-  }
+  state = {
+    isLogged: false,
+    isLoading: false
+  };
 
   componentWillMount() {
-    const { bearerToken } = this.props;
+    const { bearerToken, onLogin } = this.props;
     if (bearerToken) {
+      this.setState({ isLogged: true });
+      onLogin();
       ProfileActions.updateBearerToken(bearerToken);
     }
   }
@@ -73,6 +69,7 @@ export default class Profile extends React.Component {
       this.setState({
         isLogged: true
       });
+      this.props.onLogin();
     }
   };
 
@@ -80,6 +77,7 @@ export default class Profile extends React.Component {
     this.setState({
       isLogged: false
     });
+    this.props.onLogout();
     ProfileActions.logout();
   };
 

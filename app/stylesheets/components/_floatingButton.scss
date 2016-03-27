@@ -1,0 +1,56 @@
+.floating-button {
+  background: transparent;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: all .25s ease-out;
+
+  outline: none;
+
+  position: absolute;
+  margin: 2em;
+
+  // positioning
+  &.floating-button--fixed { position: fixed; }
+  &.floating-button--top-left { top: 0; left: 0; }
+  &.floating-button--top-right { top: 0; right: 0; }
+  &.floating-button--bottom-left { bottom: 0; left: 0; }
+  &, &.floating-button--bottom-right { bottom: 0; right: 0; }
+
+  // sizes
+  &.floating-button--small {
+    @include size(32px, 32px);
+    line-height: 32px;
+    font-size: 14px;
+  }
+  &, &.floating-button--medium {
+    @include size(48px, 48px);
+    line-height: 48px;
+    font-size: 16px;
+  }
+  &.floating-button--big {
+    @include size(64px, 64px);
+    line-height: 64px;
+    font-size: 18px;
+  }
+
+  // base colors
+  &, &.floating-button--white { @include button-color(white, transparent, $text-color); }
+  &.floating-button--primary { @include button-color($primary-color); }
+  &.floating-button--success { @include button-color($success-color); }
+  &.floating-button--info { @include button-color($info-color); }
+  &.floating-button--warning { @include button-color($warning-color); }
+  &.floating-button--error { @include button-color($error-color); }
+
+  &.floating-button--disabled {
+    cursor: default;
+    cursor: not-allowed;
+
+    opacity: .5;
+  }
+
+  @extend %floating-box;
+}

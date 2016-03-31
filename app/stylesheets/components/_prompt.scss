@@ -18,9 +18,16 @@
 
   > .fa {
     position: absolute;
-    left: 0;
     top: 50%;
+    left: 0;
     margin: -.5em 1.5em 0;
+  }
+
+  > .fa:last-child {
+    left: initial;
+    right: 0;
+    cursor: pointer;
+    color: $quiet-color;
   }
 
   > .fa + input {

@@ -12,12 +12,19 @@ class SearchStore {
   searchTopics({ q }) {
     webApi(SEARCH_TOPICS, { q });
   }
+
   searchTopicsSuccess({ results }) {
     // TODO: any check and/or ops
 
     this.setState({ results });
 
     return results;
+  }
+
+  emptyResults() {
+    this.setState({
+      results: []
+    });
   }
 }
 

@@ -31,7 +31,8 @@ export default class SearchBox extends React.Component {
           placeholder={'Search tags'}
           size={'big'}
           icon={'search'}
-          onChange={this.handleChange}/>
+          onChange={this.handleChange}
+          empty={true} />
         <ul className={styles.results}>{results.map(result =>
           <li
             className={styles.topicResult}
@@ -42,7 +43,9 @@ export default class SearchBox extends React.Component {
   };
 
   handleChange({ newText }) {
-    if (newText.length > 2) {
+    if (newText.length < 3) {
+      SearchAction.emptyResults();
+    } else {
       SearchAction.searchTopics({ q: newText });
     }
   }

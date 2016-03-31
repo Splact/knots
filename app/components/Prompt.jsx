@@ -34,8 +34,7 @@ export default class Prompt extends React.Component {
 
     return (
       <div
-        className={promptClasses}
-        onkeypress={this.handleKeyPress}>
+        className={promptClasses}>
         <link rel={'stylesheet'} href={'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'} />
         <i className={iconClasses}></i>
         <input
@@ -48,17 +47,12 @@ export default class Prompt extends React.Component {
   };
 
   handleChange = (event) => {
-    this.setState({text: event.target.value});
-  };
+    const oldText = this.state.text;
+    const newText = event.target.value;
+    const { onChange } = this.props;
 
-  handleKeyPress = ({ key }) => {
-    const {onKeyPress, disabled} = this.props;
-    const { text } = this.state;
+    this.setState({text: newText});
 
-    if (disabled === true) {
-      return false;
-    }
-
-    onKeyPress(key, text);
+    onChange({ oldText, newText });
   };
 }

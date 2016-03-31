@@ -11,7 +11,9 @@ import Profile from './Profile';
 import ProfileStore from '../stores/ProfileStore';
 
 import FloatingButton from './FloatingButton';
-import Prompt from './Prompt';
+
+import SearchBox from './SearchBox';
+import SearchStore from '../stores/SearchStore';
 
 export default class App extends React.Component {
   state = {
@@ -38,23 +40,28 @@ export default class App extends React.Component {
             onLogin={this.onLoginHandle}
             onLogout={this.onLogoutHandle}/>
         </AltContainer>
-        <Prompt
-          placeholder={'Search tags'}
-          size={'big'}
-          icon={'search'} />
+
         <AltContainer
-            stores={[MarkerStore]}
-            inject={{
-              markers: () => MarkerStore.getState().markers || []
-            }}
-          >
-          <Map options={config.map.options}/>
+          stores={[SearchStore]}
+          inject={{
+            results: () => SearchStore.getState().results || null
+          }}
+        >
+          <SearchBox />
         </AltContainer>
         <FloatingButton
           size={'big'}
           disabled={!isLogged}
           onClick={this.onCreateTopicClick}
           icon={'check'}/>
+        <AltContainer
+          stores={[MarkerStore]}
+          inject={{
+            markers: () => MarkerStore.getState().markers || []
+          }}
+        >
+          <Map options={config.map.options}/>
+        </AltContainer>
       </div>
     );
   };

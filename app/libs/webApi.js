@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from '../constants/config';
 import ProfileActions from '../actions/ProfileActions';
+import SearchActions from '../actions/SearchActions';
 
 /*
  * The API will dispatch actions once the request returns.
@@ -12,6 +13,7 @@ export const CURRENT_USER = 102;
 export const UPDATE_USER_POSITION = 103;
 export const LOGOUT = 104;
 export const UPDATE_BEARERTOKEN = 105;
+export const SEARCH_TOPICS = 106;
 
 class WebApi {
 
@@ -46,6 +48,16 @@ class WebApi {
       }
     }).then(({ data }) => {
       ProfileActions.loginSuccess(data);
+    }).catch(this._handleError);
+  }
+
+  searchTopics({ q }) {
+    this.$.request({
+      url: '/search/topics',
+      method: 'get',
+      params: { q }
+    }).then(({ data }) => {
+      SearchActions.searchTopicsSuccess(data);
     }).catch(this._handleError);
   }
 
@@ -97,6 +109,8 @@ export const webApi = function(service, params) {
     webApiInstance.updateUserPosition(params);
   } else if (service === UPDATE_BEARERTOKEN) {
     webApiInstance.updateBearerToken(params.bearerToken);
+  } else if (service === SEARCH_TOPICS) {
+    webApiInstance.searchTopics(params);
   } else if (service === LOGOUT) {
     webApiInstance.logout(params);
   } else {

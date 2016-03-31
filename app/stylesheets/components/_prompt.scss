@@ -1,12 +1,9 @@
 .prompt {
   background: white;
   box-sizing: border-box;
-  min-width: 80px;
-  max-width: 400px;
   border-radius: 28px;
   margin: auto;
-  position: absolute;
-  z-index: 200;
+  position: relative;
 
   > input {
     background: transparent;
@@ -15,6 +12,8 @@
     display: block;
     margin: 0;
     padding: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   > .fa {

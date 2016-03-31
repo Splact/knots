@@ -8,7 +8,6 @@
   "requireParenthesesAroundIIFE": true,
 
   "maximumLineLength": 120,
-  "validateLineBreaks": "LF",
   "validateIndentation": 2,
   "validateQuoteMarks": {
     "mark": "'",

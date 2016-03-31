@@ -17,7 +17,10 @@
 
 /// Helper to create a button color
 /// @author Dario Carella
-/// @param {Color} $color
+/// @param {Color} $background-color
+/// @param {Color} $border-color
+/// @param {Color} $text-color
+/// @param {Color} $lined
 @mixin button-color($background-color: $primary-color, $border-color: $background-color, $text-color: white, $lined: false) {
   background: $background-color;
   border-color: $border-color;
@@ -47,5 +50,38 @@
     background: $darken-background-color;
     border-color: $darken-border-color;
     color: $hover-text-color;
+  }
+}
+
+/// Helper to create a button color
+/// @author Dario Carella
+/// @param {Color} $background-color
+/// @param {Color} $border-color
+/// @param {Color} $text-color
+/// @param {Color} $lined
+@mixin prompt-color($background-color: $primary-color, $border-color: $background-color, $text-color: white, $lined: false) {
+  background: $background-color;
+  border-color: $border-color;
+
+
+
+  @if $lined {
+    $hover-background-color: $border-color;
+    $hover-text-color: white;
+  } @else {
+    $hover-background-color: $background-color;
+    $hover-text-color: $text-color;
+  }
+
+  > input {
+    color: $text-color;
+
+    &:focus {
+      $lighten-background-color: lighten($hover-background-color, 5%);
+      $lighten-border-color: lighten($border-color, 5%);
+      background: $lighten-background-color;
+      border-color: $lighten-border-color;
+      color: $hover-text-color;
+    }
   }
 }

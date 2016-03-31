@@ -1,52 +1,47 @@
 import React from 'react';
 import classnames from 'classnames';
-import Avatar from './Avatar';
 import FacebookLogin from 'react-facebook-login';
 import ProfileActions from '../actions/ProfileActions';
 
 export default class Profile extends React.Component {
 
-  constructor({bearerToken, ...props}) {
-    super(props);
-
-    if (bearerToken) {
-      this.state = { isLogged: true, isLoading: false };
-    } else {
-      this.state = { isLogged: false, isLoading: false };
-    }
-
-  }
+  state = {
+    isLogged: false,
+    isLoading: false
+  };
 
   componentWillMount() {
-    const { bearerToken } = this.props;
+    const { bearerToken, onLogin } = this.props;
     if (bearerToken) {
+      this.setState({ isLogged: true });
+      onLogin();
       ProfileActions.updateBearerToken(bearerToken);
     }
   }
 
   render = () => {
 
-    const { facebookOptions, defaultPicture, username, displayName, picture } = this.props;
+    const { facebookOptions, defaultPicture, username, picture } = this.props;
     const facebookAppId = facebookOptions.appId || null;
     const { isLogged } = this.state;
+    const pictureUrl = picture || defaultPicture;
 
     // defining element css classes
     const styles = {
       wrapper: classnames('profile'),
-      bar: classnames('profile--bar'),
       facebookLogin: classnames('profile--facebook-login'),
       name: classnames('profile--display-name'),
-      logoutButton: classnames('button')
+      logoutButton: classnames('button'),
+      picture: classnames('profile--picture')
     };
 
     if (isLogged) {
       return (
         <div className={styles.wrapper} data-username={username}>
-          <div className={styles.bar}>
-            <Avatar url={picture} defaultUrl={defaultPicture}/>
-            <span className={styles.name}>{displayName}</span>
-            <button className={styles.logoutButton} onClick={this.logout}>logout</button>
+          <div className={styles.picture}>
+            <img src={pictureUrl}/>
           </div>
+          <button className={styles.logoutButton} onClick={this.logout}>logout</button>
         </div>
       );
     } else {
@@ -73,6 +68,7 @@ export default class Profile extends React.Component {
       this.setState({
         isLogged: true
       });
+      this.props.onLogin();
     }
   };
 
@@ -80,6 +76,7 @@ export default class Profile extends React.Component {
     this.setState({
       isLogged: false
     });
+    this.props.onLogout();
     ProfileActions.logout();
   };
 

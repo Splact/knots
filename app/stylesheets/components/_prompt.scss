@@ -1,0 +1,60 @@
+.prompt {
+  background: white;
+  box-sizing: border-box;
+  border-radius: 28px;
+  margin: auto;
+  position: relative;
+
+  > input {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  > .fa {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin: -.5em 1.5em 0;
+  }
+
+  > .fa + input {
+    padding-left: 1em;
+  }
+
+  // sizes
+  &.prompt--small {
+    padding: .5em 1em;
+    > input { font-size: 14px; }
+  }
+  &, &.prompt--medium {
+    padding: .75em 1.5em;
+    > input { font-size: 16px; }
+  }
+  &.prompt--big {
+    padding: 1em 2em;
+    > input { font-size: 18px; }
+  }
+
+  // base colors
+  &, &.prompt--white { @include prompt-color(white, transparent, $text-color); }
+  &.prompt--primary { @include prompt-color($primary-color); }
+  &.prompt--success { @include prompt-color($success-color); }
+  &.prompt--info { @include prompt-color($info-color); }
+  &.prompt--warning { @include prompt-color($warning-color); }
+  &.prompt--error { @include prompt-color($error-color); }
+
+  &.prompt--disabled {
+    cursor: default;
+    cursor: not-allowed;
+
+    opacity: .5;
+  }
+
+  @extend %floating-box;
+}

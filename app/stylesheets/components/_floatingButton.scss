@@ -12,6 +12,7 @@
 
   position: absolute;
   margin: 2em;
+  z-index: z('floating');
 
   // positioning
   &.floating-button--fixed { position: fixed; }

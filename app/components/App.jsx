@@ -2,10 +2,10 @@ import config from '../constants/config';
 import React from 'react';
 import classnames from 'classnames';
 import AltContainer from 'alt-container';
-//import webApi from '../libs/webApi';
 
 import Map from './Map';
-import MarkerStore from '../stores/MarkerStore';
+import TopicStore from '../stores/TopicStore';
+import TopicActions from '../actions/TopicActions';
 
 import Profile from './Profile';
 import ProfileStore from '../stores/ProfileStore';
@@ -16,13 +16,9 @@ import SearchBox from './SearchBox';
 import SearchStore from '../stores/SearchStore';
 
 export default class App extends React.Component {
-  state = {
-    isLogged: false
-  };
-
   render = () => {
-    const { isLogged } = this.state;
-    let wrapperClasses = classnames('knots-wrapper');
+    const wrapperClasses = classnames('knots-wrapper');
+
     return (
       <div className={wrapperClasses}>
         <AltContainer
@@ -36,9 +32,7 @@ export default class App extends React.Component {
         >
           <Profile
             facebookOptions={config.facebook}
-            defaultPicture={config.profile.defaultPicture}
-            onLogin={this.onLoginHandle}
-            onLogout={this.onLogoutHandle}/>
+            defaultPicture={config.profile.defaultPicture} />
         </AltContainer>
 
         <AltContainer
@@ -49,15 +43,28 @@ export default class App extends React.Component {
         >
           <SearchBox />
         </AltContainer>
-        <FloatingButton
-          size={'big'}
-          disabled={!isLogged}
-          onClick={this.onCreateTopicClick}
-          icon={'check'}/>
+
         <AltContainer
-          stores={[MarkerStore]}
+          stores={[TopicStore, ProfileStore]}
           inject={{
-            markers: () => MarkerStore.getState().markers || []
+            disabled: () => !ProfileStore.getState().bearerToken || !TopicStore.getState().tag,
+            color: () => {
+              const { username } = ProfileStore.getState().profile;
+              const { checkins } = TopicStore.getState();
+
+              return (checkins.filter(({id}) => id === username).length > 0) ? 'primary' : null
+            }
+          }}
+        >
+          <FloatingButton
+            size={'big'}
+            onClick={this.handleCheckinClick}
+            icon={'check'} />
+        </AltContainer>
+        <AltContainer
+          stores={[ TopicStore ]}
+          inject={{
+            markers: () => TopicStore.getState().checkins || []
           }}
         >
           <Map options={config.map.options}/>
@@ -66,19 +73,19 @@ export default class App extends React.Component {
     );
   };
 
-  onLoginHandle = () => {
-    this.setState({
-      isLogged: true
-    });
-  };
-  onLogoutHandle = () => {
-    this.setState({
-      isLogged: false
-    });
-  };
+  handleCheckinClick = () => {
+    const { tag, checkins } = TopicStore.getState();
+    const { username } = ProfileStore.getState().profile;
 
-  onCreateTopicClick = () => {
-    console.log('TODO: open prompt');
+    const isChecked = checkins.filter(user => user.id === username).length > 0;
+
+    if (tag) {
+      if (!isChecked) {
+        TopicActions.doCheckin({ tag });
+      } else {
+        TopicActions.undoCheckin({ tag });
+      }
+    }
   };
 }
 

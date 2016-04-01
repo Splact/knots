@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Prompt from './Prompt';
 import SearchAction from '../actions/SearchActions';
-import MarkerActions from '../actions/MarkerActions';
+import TopicActions from '../actions/TopicActions';
 
 export default class SearchBox extends React.Component {
 
@@ -55,7 +55,6 @@ export default class SearchBox extends React.Component {
   }
 
   handleResultClick({ tag }) {
-    console.log(tag);
-    MarkerActions.loadMarkers({ tag });
+    TopicActions.read({ tag });
   }
 }

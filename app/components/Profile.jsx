@@ -14,7 +14,9 @@ export default class Profile extends React.Component {
     const { bearerToken, onLogin } = this.props;
     if (bearerToken) {
       this.setState({ isLogged: true });
-      onLogin();
+      if (onLogin) {
+        onLogin();
+      }
       ProfileActions.updateBearerToken(bearerToken);
     }
   }
@@ -62,22 +64,25 @@ export default class Profile extends React.Component {
   responseFacebook = (response) => {
     // retrieve relevant data from response
     const { status, accessToken } = response;
+    const { onLogin } = this.props;
 
     if (!status || status !== 'not authorized') {
       ProfileActions.login(accessToken);
       this.setState({
         isLogged: true
       });
-      this.props.onLogin();
+      if (onLogin) onLogin();
     }
   };
 
   logout = () => {
+    const { onLogout } = this.props;
+
+    ProfileActions.logout();
     this.setState({
       isLogged: false
     });
-    this.props.onLogout();
-    ProfileActions.logout();
+    if (onLogout) onLogout();
   };
 
 }

@@ -57,7 +57,7 @@ class ProfileStore {
     // TODO: set position state loading
     webApi(UPDATE_USER_POSITION, { position });
   }
-  updatePositionSuccess(position) {
+  updatePositionSuccess({ position }) {
     let profile = this.profile;
     profile.position = position;
     // TODO: set position state loaded

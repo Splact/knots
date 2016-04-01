@@ -1,5 +1,4 @@
 import React from 'react';
-import { default as update } from 'react-addons-update';
 import { default as FaSpinner } from 'react-icons/lib/fa/spinner';
 import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsLoader';
 import { GoogleMap, Marker } from 'react-google-maps';
@@ -20,12 +19,11 @@ export default class Map extends React.Component {
 
   static version = 22;
 
-  constructor({markers, ...props}) {
+  constructor({...props}) {
     super(props);
 
     this.state = {
-      center: null,
-      markers: markers
+      center: null
     };
   }
 
@@ -50,11 +48,13 @@ export default class Map extends React.Component {
   }
 
   render = () => {
-    const { defaultZoom, defaultCenter, ...options } = this.props.options;
+    const { markers, options, ...props } = this.props;
+    const { defaultZoom, defaultCenter } = options;
+    const { center } = this.state;
 
-    let { center, markers } = this.state;
-
-    let mapClasses = classnames('map');
+    const styles = {
+      map: classnames('map')
+    };
 
     return (
       <ScriptjsLoader
@@ -62,7 +62,7 @@ export default class Map extends React.Component {
         pathname={'/maps/api/js'}
         query={{ v: `3.${ Map.version }`, libraries: `geometry,drawing,places` }}
         loadingElement={
-          <div {...this.props} style={{ height: `100%` }}>
+          <div {...props} style={{ height: `100%` }}>
             <FaSpinner
               style={{
                 display: 'block',
@@ -75,12 +75,12 @@ export default class Map extends React.Component {
           </div>
         }
         containerElement={
-          <div {...this.props} style={{ height: `100%` }} />
+          <div {...props} style={{ height: `100%` }} />
         }
         googleMapElement={
           <GoogleMap
             ref={'map'}
-            className={mapClasses}
+            className={styles.map}
             defaultZoom={defaultZoom}
             defaultCenter={defaultCenter}
             center={center}
@@ -129,39 +129,11 @@ export default class Map extends React.Component {
 
   };
 
-  /*
-   * This is called when you click on the map.
-   * Go and try click now.
-   */
   handleMapClick = () => {
-    // temp
     return;
-
-    // let { markers } = this.state;
-    // markers = update(markers, {
-    //   $push: [
-    //     {
-    //       position: event.latLng,
-    //       defaultAnimation: 2,
-    //       key: Date.now() // Add a key property for: http://fb.me/react-warning-keys
-    //     }
-    //   ]
-    // });
-    // this.setState({ markers });
   };
 
-  handleMarkerRightclick(index) {
-    /*
-     * All you modify is data, and the view is driven by data.
-     * This is so called data-driven-development. (And yes, it's now in
-     * web front end and even with google maps API.)
-     */
-    let { markers } = this.state;
-    markers = update(markers, {
-      $splice: [
-        [index, 1]
-      ]
-    });
-    this.setState({ markers });
+  handleMarkerRightclick() {
+    return;
   }
 }

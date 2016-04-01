@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Prompt from './Prompt';
 import SearchAction from '../actions/SearchActions';
+import MarkerActions from '../actions/MarkerActions';
 
 export default class SearchBox extends React.Component {
 
@@ -33,11 +34,14 @@ export default class SearchBox extends React.Component {
           icon={'search'}
           onChange={this.handleChange}
           empty={true} />
-        <ul className={styles.results}>{results.map(result =>
-          <li
-            className={styles.topicResult}
-            key={result.tag}>#{result.tag} ({result.usersCount})</li>
-        )}</ul>
+        <ul className={styles.results}>{
+          results.map(result =>
+            <li
+              className={styles.topicResult}
+              key={result.tag}
+              onClick={this.handleResultClick.bind(this, { tag: result.tag })}>#{result.tag} ({result.usersCount})</li>
+          )
+        }</ul>
       </div>
     );
   };
@@ -48,5 +52,10 @@ export default class SearchBox extends React.Component {
     } else {
       SearchAction.searchTopics({ q: newText });
     }
+  }
+
+  handleResultClick({ tag }) {
+    console.log(tag);
+    MarkerActions.loadMarkers({ tag });
   }
 }

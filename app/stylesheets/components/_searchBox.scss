@@ -2,19 +2,17 @@
   width: 100%;
   min-width: 24rem;
   max-width: 40rem;
+  box-sizing: border-box;
 
-  margin: 3rem;
+  margin: auto;
+  padding: 3rem;
 
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0;
+  right: 0;
 
   z-index: 200;
-
-  > * {
-    position: relative;
-    left: -50%;
-  }
 
   .search-box--results {
     list-style: none;

@@ -48,12 +48,13 @@ export default class Map extends React.Component {
   }
 
   render = () => {
-    const { markers, options, ...props } = this.props;
+    const { markers, options, title, ...props } = this.props;
     const { defaultZoom, defaultCenter } = options;
     const { center } = this.state;
 
     const styles = {
-      map: classnames('map')
+      map: classnames('map'),
+      title: classnames('map--title')
     };
 
     return (
@@ -100,6 +101,7 @@ export default class Map extends React.Component {
                 />
               ))}
            </MarkerClusterer>
+            <div className={styles.title}>{title}</div>
           </GoogleMap>
         } />
     );

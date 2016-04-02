@@ -1,3 +1,21 @@
-.map-test {
-  color: $primary-color;
+.map--title {
+  position: absolute;
+  z-index: z('floating');
+  left: 0;
+  bottom: 0;
+  padding: 3rem;
+  color: white;
+  text-shadow: 0 .2rem 1.6rem rgba(0,0,0,.1);
+  box-sizing: border-box;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  &, &.map--title--big { font-size: 12rem; }
+  &.map--title--medium { font-size: 8rem; }
+  &.map--title--small { font-size: 6rem; }
+
+  &::before {
+    content: '#';
+  }
 }

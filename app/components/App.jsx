@@ -64,7 +64,8 @@ export default class App extends React.Component {
         <AltContainer
           stores={[ TopicStore ]}
           inject={{
-            markers: () => TopicStore.getState().checkins || []
+            markers: () => TopicStore.getState().checkins || [],
+            title: () => TopicStore.getState().tag || null
           }}
         >
           <Map options={config.map.options}/>

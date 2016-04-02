@@ -57,6 +57,8 @@ export default class Map extends React.Component {
       title: classnames('map--title')
     };
 
+    const titleElement = (title) ? <div className={styles.title}>{title}</div> : null;
+
     return (
       <ScriptjsLoader
         hostname={'maps.googleapis.com'}
@@ -100,8 +102,8 @@ export default class Map extends React.Component {
                   key={ marker.id }
                 />
               ))}
-           </MarkerClusterer>
-            <div className={styles.title}>{title}</div>
+            </MarkerClusterer>
+            {titleElement}
           </GoogleMap>
         } />
     );

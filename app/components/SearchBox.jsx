@@ -56,5 +56,6 @@ export default class SearchBox extends React.Component {
 
   handleResultClick({ tag }) {
     TopicActions.read({ tag });
+    SearchAction.emptyResults();
   }
 }

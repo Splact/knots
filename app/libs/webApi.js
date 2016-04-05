@@ -18,6 +18,7 @@ export const SEARCH_TOPICS = 106;
 export const DO_TOPIC_CHECKIN = 107;
 export const UNDO_TOPIC_CHECKIN = 108;
 export const READ_TOPIC = 109;
+export const CREATE_TOPIC = 110;
 
 class WebApi {
 
@@ -71,6 +72,16 @@ class WebApi {
       method: 'get'
     }).then(({ data }) => {
       TopicActions.readSuccess({ ...data, tag });
+    }).catch(this._handleError);
+  }
+
+  createTopic({ tag }) {
+    this.$.request({
+      url: `/topics`,
+      method: 'post',
+      data: { tag }
+    }).then(({ data }) => {
+      TopicActions.createSuccess({ ...data, tag });
     }).catch(this._handleError);
   }
 
@@ -156,6 +167,8 @@ export const webApi = function(service, params) {
     webApiInstance.doTopicCheckin(params);
   } else if (service === UNDO_TOPIC_CHECKIN) {
     webApiInstance.undoTopicCheckin(params);
+  } else if (service === CREATE_TOPIC) {
+    webApiInstance.createTopic(params);
   } else if (service === LOGOUT) {
     webApiInstance.logout(params);
   } else {

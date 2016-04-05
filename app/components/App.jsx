@@ -38,7 +38,8 @@ export default class App extends React.Component {
         <AltContainer
           stores={[SearchStore]}
           inject={{
-            results: () => SearchStore.getState().results || null
+            results: () => SearchStore.getState().results || null,
+            query: () => SearchStore.getState().query || null
           }}
         >
           <SearchBox />

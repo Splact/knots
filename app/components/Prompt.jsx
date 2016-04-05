@@ -48,7 +48,8 @@ export default class Prompt extends React.Component {
           type={'text'}
           placeholder={placeholder}
           value={text}
-          onChange={this.handleChange} />
+          onChange={this.handleChange}
+          onKeyPress={this.handleEnter}/>
         {emptyElement}
       </div>
     );
@@ -72,6 +73,16 @@ export default class Prompt extends React.Component {
     this.setState({ text: newText });
 
     onChange({ oldText, newText });
+  };
 
+  handleEnter = ({ charCode, target }) => {
+    const { onEnter } = this.props;
+
+    const oldText = this.state.text;
+    const newText = target.value;
+
+    if (charCode == 13) {
+      onEnter({ oldText, newText });
+    }
   };
 }

@@ -1,7 +1,7 @@
 import alt from '../libs/alt';
 import TopicActions from '../actions/TopicActions';
 import ProfileStore from '../stores/ProfileStore';
-import { webApi, READ_TOPIC, DO_TOPIC_CHECKIN, UNDO_TOPIC_CHECKIN } from '../libs/webApi';
+import { webApi, READ_TOPIC, CREATE_TOPIC, DO_TOPIC_CHECKIN, UNDO_TOPIC_CHECKIN } from '../libs/webApi';
 
 class TopicStore {
   constructor() {
@@ -9,6 +9,19 @@ class TopicStore {
 
     this.tag = null;
     this.checkins = [];
+  }
+
+  create({ tag }) {
+    webApi(CREATE_TOPIC, { tag });
+  }
+  createSuccess({ tag }) {
+    const { username, position } = ProfileStore.getState().profile;
+    const checkins = [{
+      id: username,
+      lat: position.lat,
+      lng: position.lng
+    }];
+    this.setState({ tag, checkins });
   }
 
   read({ tag }) {

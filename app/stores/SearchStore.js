@@ -7,9 +7,14 @@ class SearchStore {
     this.bindActions(SearchActions);
 
     this.results = [];
+    this.query = null;
   }
 
   searchTopics({ q }) {
+    this.setState({
+      results: [],
+      query: q
+    });
     webApi(SEARCH_TOPICS, { q });
   }
 
@@ -23,7 +28,8 @@ class SearchStore {
 
   emptyResults() {
     this.setState({
-      results: []
+      results: [],
+      query: null
     });
   }
 }

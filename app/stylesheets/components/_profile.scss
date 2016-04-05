@@ -1,9 +1,20 @@
 .profile {
+  width: 100%;
+  min-width: 32rem;
+  max-width: 48rem;
   box-sizing: border-box;
+
+  margin: auto;
   padding: 3rem;
+
   position: absolute;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+
+  z-index: z('floating');
+
+  text-align: center;
 
   .profile--picture {
     display: inline-block;
@@ -40,17 +51,16 @@
 
   .profile--facebook-login {
     display: block;
-    height: 80px;
     background: #4c69ba;
     border: 1px solid #4c69ba;
-    border-radius: 40px;
-    padding: .75em 2em;
+    border-radius: 4rem;
+    padding: 1em 2em;
     margin: auto;
     color: #fff;
     cursor: pointer;
     font-family: Helvetica,sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1.6rem;
     text-decoration: none;
     text-transform: uppercase;
     transition: background-color .3s, border-color .3s;

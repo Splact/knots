@@ -8,11 +8,11 @@
   padding: 3rem;
 
   position: absolute;
-  top: 0;
+  top: 10rem;
   left: 0;
   right: 0;
 
-  z-index: 200;
+  z-index: z('floating');
 
   .search-box--results {
     list-style: none;
@@ -25,7 +25,8 @@
       display: none;
     }
 
-    .search-box--topic-result {
+    .search-box--topic-result,
+    .search-box--create-topic {
       padding: 1.6rem;
       cursor: pointer;
 
@@ -37,6 +38,18 @@
       &.active {
         background: $primary-color;
         color: white;
+      }
+
+    }
+    .search-box--create-topic {
+      background: $info-color;
+      color: white;
+      text-align: center;
+      &:hover,
+      &:focus,
+      &:active,
+      &.active {
+        background: $warning-color;
       }
     }
   }

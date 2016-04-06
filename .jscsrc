@@ -17,6 +17,7 @@
 
   "disallowKeywords": ["with"],
   "disallowSpacesInsideObjectBrackets": null,
+  "disallowSpacesInsideArrayBrackets": null,
   "disallowImplicitTypeConversion": ["string"],
 
   "safeContextKeyword": "that",

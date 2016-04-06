@@ -53,7 +53,7 @@ export default class App extends React.Component {
               const { username } = ProfileStore.getState().profile;
               const { checkins } = TopicStore.getState();
 
-              return (checkins.filter(({id}) => id === username).length > 0) ? 'primary' : null
+              return (checkins.filter(({id}) => id === username).length > 0) ? 'primary' : null;
             }
           }}
         >

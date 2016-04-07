@@ -24,28 +24,14 @@
     position: relative;
     transform: rotate(45deg);
 
+    padding: .4rem;
+    border-radius: 50% 50% 0 50%;
+    background: white;
     > img {
       height: 100%;
       width: 100%;
       border-radius: 50%;
-      border: .5rem solid white;
-      box-sizing: border-box;
-      position: relative;
       transform: rotate(-45deg);
-      z-index: 200;
-      background: white;
-    }
-
-    &:after {
-      content: '';
-      display: inline-block;
-      width: 50%;
-      height: 50%;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      background: white;
-      z-index: 100;
     }
 
     @extend %floating-box;

@@ -26,12 +26,14 @@
 
     > img {
       height: 100%;
+      width: 100%;
       border-radius: 50%;
       border: .5rem solid white;
       box-sizing: border-box;
       position: relative;
       transform: rotate(-45deg);
       z-index: 200;
+      background: white;
     }
 
     &:after {

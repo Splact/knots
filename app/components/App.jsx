@@ -31,8 +31,7 @@ export default class App extends React.Component {
           }}
         >
           <Profile
-            facebookOptions={config.facebook}
-            defaultPicture={config.profile.defaultPicture} />
+            facebookOptions={config.facebook} />
         </AltContainer>
 
         <AltContainer

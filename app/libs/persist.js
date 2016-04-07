@@ -4,7 +4,16 @@ export default function(alt, storage, storeName) {
   const finalStore = makeFinalStore(alt);
 
   try {
-    alt.bootstrap(storage.get(storeName));
+    let stores = JSON.parse(storage.get(storeName));
+
+    stores.TopicStore = {
+      tag: null,
+      checkins: []
+    };
+
+    stores = JSON.stringify(stores);
+
+    alt.bootstrap(stores);
   } catch (e) {
     console.error('Failed to bootstrap data', e);
   }

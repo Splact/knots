@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --content-base build",
+    "start": "webpack-dev-server --content-base build --history-api-fallback",
     "stats": "webpack --profile --json > stats.json",
     "test": "karma start || true",
     "tdd": "karma start --auto-watch --no-single-run",
@@ -73,6 +73,7 @@
     "react-dom": "^0.14.7",
     "react-facebook-login": "^2.1.2",
     "react-google-maps": "^4.9.1",
-    "react-icons": "^1.0.3"
+    "react-icons": "^1.0.3",
+    "react-router": "^2.0.1"
   }
 }

@@ -16,6 +16,14 @@ import SearchBox from './SearchBox';
 import SearchStore from '../stores/SearchStore';
 
 export default class App extends React.Component {
+
+  componentWillMount() {
+    const { topic } = this.props.params;
+    if (topic) {
+      TopicActions.read({ tag: topic });
+    }
+  }
+
   render = () => {
     const wrapperClasses = classnames('knots-wrapper');
 

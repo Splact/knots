@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Prompt from './Prompt';
+import { browserHistory } from 'react-router';
 import SearchAction from '../actions/SearchActions';
 import TopicActions from '../actions/TopicActions';
 
@@ -37,7 +38,6 @@ export default class SearchBox extends React.Component {
           onClick={this.handleResultClick.bind(this, { tag: result.tag })}>#{result.tag} ({result.usersCount})</li>
       );
     } else {
-      console.log(`no results. topic: ${query}`);
       const handleTopicCreation = this.handleTopicCreation.bind(this, { newText: query });
       ulChildren = (
         <li
@@ -70,6 +70,8 @@ export default class SearchBox extends React.Component {
   }
 
   handleResultClick({ tag }) {
+    const path = `/${tag}`;
+    browserHistory.push(path);
     TopicActions.read({ tag });
     SearchAction.emptyResults();
   }

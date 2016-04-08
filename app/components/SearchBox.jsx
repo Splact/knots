@@ -78,9 +78,11 @@ export default class SearchBox extends React.Component {
 
   handleTopicCreation({ newText }) {
     const { results } = this.props;
+    const path = `/${newText}`;
 
     if ((newText.length > 2) && (!results.length)) {
       TopicActions.create({tag: newText});
+      browserHistory.push(path);
       SearchAction.emptyResults();
     }
   }

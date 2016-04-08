@@ -102,6 +102,8 @@ class WebApi {
   updateUserPosition({ position }) {
     // TODO: validate position
 
+    ProfileActions.updatePositionFailed.defer();
+
     if (!this.bearerToken) {
       return false;
     }

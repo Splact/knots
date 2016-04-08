@@ -6,6 +6,7 @@ export default alt.generateActions(
   'logout',
   'updatePosition',
   'updatePositionSuccess',
+  'updatePositionFailed',
   'fetchUser',
   'fetchUserSuccess',
   'updateBearerToken'

@@ -9,9 +9,18 @@ class TopicStore {
 
     this.tag = null;
     this.checkins = [];
+    this.isPending = {
+      create: false,
+      fetch: false
+    };
   }
 
   create({ tag }) {
+    this.setState({
+      isPending: {
+        create: true
+      }
+    });
     webApi(CREATE_TOPIC, { tag });
   }
   createSuccess({ tag }) {
@@ -21,10 +30,21 @@ class TopicStore {
       lat: position.lat,
       lng: position.lng
     }];
-    this.setState({ tag, checkins });
+    this.setState({
+      tag,
+      checkins,
+      isPending: {
+        create: false
+      }
+    });
   }
 
   read({ tag }) {
+    this.setState({
+      isPending: {
+        fetch: true
+      }
+    });
     webApi(READ_TOPIC, { tag });
   }
   readSuccess({ tag, checkins }) {
@@ -33,7 +53,13 @@ class TopicStore {
       lat: position.lat,
       lng: position.lng
     }));
-    this.setState({ tag, checkins });
+    this.setState({
+      tag,
+      checkins,
+      isPending: {
+        fetch: false
+      }
+    });
   }
 
   doCheckin({ tag }) {

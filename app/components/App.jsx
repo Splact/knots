@@ -11,6 +11,7 @@ import Profile from './Profile';
 import ProfileStore from '../stores/ProfileStore';
 
 import FloatingButton from './FloatingButton';
+import AjaxLoader from './AjaxLoader';
 
 import SearchBox from './SearchBox';
 import SearchStore from '../stores/SearchStore';
@@ -46,7 +47,8 @@ export default class App extends React.Component {
           stores={[SearchStore]}
           inject={{
             results: () => SearchStore.getState().results || null,
-            query: () => SearchStore.getState().query || null
+            query: () => SearchStore.getState().query || null,
+            isPending: () => SearchStore.getState().isPending || false
           }}
         >
           <SearchBox />
@@ -68,6 +70,27 @@ export default class App extends React.Component {
             size={'big'}
             onClick={this.handleCheckinClick}
             icon={'check'} />
+        </AltContainer>
+        <AltContainer
+          stores={[SearchStore, ProfileStore, TopicStore]}
+          inject={{
+            isLoading: () => {
+              const SearchPending = SearchStore.getState().isPending;
+              const TopicPending = TopicStore.getState().isPending;
+              const ProfilePending = ProfileStore.getState().isPending;
+
+              const isSearching = SearchPending || false;
+              const isProfileFetching = ProfilePending ? ProfilePending.fetch || false : false;
+              const isLoginPending = ProfilePending ? ProfilePending.login || false : false;
+              const isUpdatingProfile = ProfilePending ? ProfilePending.updatePosition || false : false;
+              const isTopicFetching = TopicPending ? TopicPending.fetch || false : false;
+              const isTopicCreating = TopicPending ? TopicPending.create || false : false;
+
+              return isSearching || isTopicFetching || isTopicCreating || isProfileFetching ||
+                     isLoginPending || isUpdatingProfile;
+            }
+          }}>
+          <AjaxLoader/>
         </AltContainer>
         <AltContainer
           stores={[ TopicStore ]}

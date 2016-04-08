@@ -8,20 +8,31 @@ class SearchStore {
 
     this.results = [];
     this.query = null;
+    this.isPending = false;
   }
 
   searchTopics({ q }) {
-    this.setState({
-      results: [],
-      query: q
-    });
-    webApi(SEARCH_TOPICS, { q });
+    const { results, query } = this;
+    if ((results.length > 0) || (!query)) {
+      this.setState({
+        results: [],
+        query: q,
+        isPending: true
+      });
+      webApi(SEARCH_TOPICS, { q });
+    } else {
+      this.setState({
+        query: q
+      });
+    }
   }
 
   searchTopicsSuccess({ results }) {
-    // TODO: any check and/or ops
-
-    this.setState({ results });
+    this.setState({
+      results,
+      isPending: false,
+      reqId: null
+    });
 
     return results;
   }

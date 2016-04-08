@@ -7,15 +7,12 @@ import TopicActions from '../actions/TopicActions';
 
 export default class SearchBox extends React.Component {
 
-  state = {};
-
-  componentWillMount() {
-    //const { results } = this.props;
-  }
-
   render = () => {
 
-    const { results, query } = this.props;
+    const { results, query/*, isPending*/ } = this.props;
+
+    // TEST
+    const isPending = false;
 
     // defining element css classes
     const styles = {
@@ -25,26 +22,29 @@ export default class SearchBox extends React.Component {
         'search-box--results--hidden': !query
       }),
       topicResult: classnames('search-box--topic-result'),
-      createTopic: classnames('search-box--create-topic')
+      createTopic: classnames('search-box--create-topic'),
+      pendingSearch: classnames('search-box--pending-search')
     };
 
-    let ulChildren;
+    let ulChildren = null;
 
-    if (results.length) {
-      ulChildren = results.map(result =>
-        <li
-          className={styles.topicResult}
-          key={result.tag}
-          onClick={this.handleResultClick.bind(this, { tag: result.tag })}>#{result.tag} ({result.usersCount})</li>
-      );
-    } else {
-      const handleTopicCreation = this.handleTopicCreation.bind(this, { newText: query });
-      ulChildren = (
-        <li
-          className={styles.createTopic}
-          key={query}
-          onClick={handleTopicCreation}>Be the first on <strong>#{query}</strong></li>
-      );
+    if (!isPending) {
+      if (results.length) {
+        ulChildren = results.map(result =>
+          <li
+            className={styles.topicResult}
+            key={result.tag}
+            onClick={this.handleResultClick.bind(this, { tag: result.tag })}>#{result.tag} ({result.usersCount})</li>
+        );
+      } else {
+        const handleTopicCreation = this.handleTopicCreation.bind(this, { newText: query });
+        ulChildren = (
+          <li
+            className={styles.createTopic}
+            key={query}
+            onClick={handleTopicCreation}>Be the first on <strong>#{query}</strong></li>
+        );
+      }
     }
 
     return (

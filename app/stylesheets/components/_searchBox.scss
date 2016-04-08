@@ -26,7 +26,8 @@
     }
 
     .search-box--topic-result,
-    .search-box--create-topic {
+    .search-box--create-topic,
+    .search-box--pending-search {
       padding: 1.6rem;
       cursor: pointer;
 
@@ -39,7 +40,6 @@
         background: $primary-color;
         color: white;
       }
-
     }
     .search-box--create-topic {
       background: $info-color;
@@ -50,6 +50,23 @@
       &:active,
       &.active {
         background: $warning-color;
+      }
+    }
+
+    &.search-box--results--loading {
+      color: white;
+      text-align: center;
+
+      &,
+      &:hover,
+      &:focus,
+      &:active,
+      &.active {
+        background: $warning-color;
+      }
+
+      &::after {
+        content: 'loading...';
       }
     }
   }

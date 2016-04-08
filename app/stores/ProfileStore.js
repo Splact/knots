@@ -14,21 +14,39 @@ class ProfileStore {
 
     this.profile = defaultProfile;
     this.bearerToken = null;
+    this.isPending = {
+      login: false,
+      fetch: false,
+      updatePosition: false
+    };
   }
 
   login(accessToken) {
-    // TODO: set login state loading
+    this.setState({
+      isPending: {
+        login: true
+      }
+    });
     webApi(FACEBOOK_LOGIN, { accessToken });
   }
   loginSuccess({ token }) {
-    this.setState({ bearerToken: token });
-    // TODO: set login state loaded
+    this.setState({
+      bearerToken: token,
+      isPending: {
+        login: false
+      }
+    });
 
     this.updateBearerToken(token);
     this.fetchUser();
   }
 
   fetchUser() {
+    this.setState({
+      isPending: {
+        fetch: true
+      }
+    });
     // request current user data from webApi
     webApi(CURRENT_USER);
   }
@@ -37,7 +55,12 @@ class ProfileStore {
 
     const profile = { username, displayName, picture, position };
 
-    this.setState({ profile });
+    this.setState({
+      profile,
+      isPending: {
+        fetch: false
+      }
+    });
 
     return profile;
   }
@@ -54,14 +77,29 @@ class ProfileStore {
   }
 
   updatePosition(position) {
-    // TODO: set position state loading
+    this.setState({
+      isPending: {
+        updatePosition: true
+      }
+    });
     webApi(UPDATE_USER_POSITION, { position });
   }
   updatePositionSuccess({ position }) {
     let profile = this.profile;
     profile.position = position;
-    // TODO: set position state loaded
-    this.setState({ profile });
+    this.setState({
+      profile,
+      isPending: {
+        updatePosition: false
+      }
+    });
+  }
+  updatePositionFailed() {
+    this.setState({
+      isPending: {
+        updatePosition: false
+      }
+    });
   }
 
   updateBearerToken(bearerToken) {

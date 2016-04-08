@@ -6,7 +6,10 @@
 
   cursor: pointer;
 
-  transition: all .25s ease-out;
+  transition: visibility .25s ease-out,
+              opacity .25s ease-out,
+              color .25s .25s ease-out,
+              background-color .25s .25s ease-out;
 
   outline: none;
 
@@ -50,7 +53,8 @@
     cursor: default;
     cursor: not-allowed;
 
-    opacity: .5;
+    opacity: 0;
+    visibility: hidden;
   }
 
   @extend %floating-box;

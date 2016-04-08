@@ -6,8 +6,9 @@ export default class FloatingButton extends React.Component {
   render = () => {
     let { icon, color, size, fixed, position, disabled } = this.props;
 
-    if (!icon)
+    if (!icon) {
       icon = this.defaultIcon;
+    }
 
     let fbClasses = classnames('floating-button', {
       'floating-button--primary': color === 'primary',

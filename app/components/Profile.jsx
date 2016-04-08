@@ -71,7 +71,9 @@ export default class Profile extends React.Component {
       this.setState({
         isLogged: true
       });
-      if (onLogin) onLogin();
+      if (onLogin) {
+        onLogin();
+      }
     }
   };
 
@@ -82,7 +84,9 @@ export default class Profile extends React.Component {
     this.setState({
       isLogged: false
     });
-    if (onLogout) onLogout();
+    if (onLogout) {
+      onLogout();
+    }
   };
 
 }

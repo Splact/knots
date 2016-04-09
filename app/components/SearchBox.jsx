@@ -9,10 +9,7 @@ export default class SearchBox extends React.Component {
 
   render = () => {
 
-    const { results, query/*, isPending*/ } = this.props;
-
-    // TEST
-    const isPending = false;
+    const { results, query, isPending } = this.props;
 
     // defining element css classes
     const styles = {

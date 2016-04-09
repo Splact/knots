@@ -13,7 +13,7 @@ class SearchStore {
 
   searchTopics({ q }) {
     const { results, query } = this;
-    if ((results.length > 0) || (!query)) {
+    if ((results.length > 0) || (!query) || (query.length > q.length)) {
       this.setState({
         results: [],
         query: q,

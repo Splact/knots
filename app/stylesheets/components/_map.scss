@@ -11,9 +11,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
 
-  &, &.map--title--big { font-size: 12rem; }
-  &.map--title--medium { font-size: 8rem; }
-  &.map--title--small { font-size: 6rem; }
+  font-size: 6rem;
+  
+  @include respond-to(medium-screens) { font-size: 8rem; }
+  @include respond-to(wide-screens) { font-size: 12rem; }
 
   &::before {
     content: '#';

@@ -11,14 +11,15 @@ import webApiSaga from './webApiSaga';
 
 // Worker Saga : will be fired on SEARCH_TOPICS_REQUESTED actions
 const searchTopics = function*(action) {
-  try {
-    // Do search
-    const searchTopicsParams = { q: action.payload };
-    const { results } = yield call(webApiSaga, 'searchTopics', searchTopicsParams);
+  // Do search
+  const searchTopicsParams = { q: action.payload };
+  const { error, results } = yield call(webApiSaga, 'searchTopics', searchTopicsParams);
+
+  if (!error) {
     // Update store search results
     yield put(searchTopicsSucceeded({ results, query: action.payload }));
-  } catch (e) {
-    yield put(searchTopicsFailed(e));
+  } else {
+    yield put(searchTopicsFailed(error));
   }
 };
 

@@ -8,14 +8,33 @@ class WebApi {
     this.bearerToken = null;
   }
 
+  _responseHandler(response) {
+    return {
+      error: null,
+      ...response.data
+    };
+  }
   _errorHandler(response) {
     let error;
+
     if (response instanceof Error) {
-      error = {status: 500, message: response.message};
-    } else {
-      error = {status: response.status, message: response.data.message};
+      error = {
+        status: 500,
+        message: response.message
+      };
+    } else if (!response) {
+      error = {
+        status: 500,
+        message: 'No response received.'
+      };
+    } else if (response.status >= 400) {
+      error = {
+        status: response.status,
+        message: response.data.message
+      };
     }
-    throw error;
+
+    return { error };
   }
 
   updateBearerToken = ({ token }) => {
@@ -36,7 +55,7 @@ class WebApi {
       } catch (e) {
         reject(e);
       }
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   facebookLogin = ({ accessToken }) => {
@@ -49,7 +68,7 @@ class WebApi {
     }).then((response) => {
       this.updateBearerToken({ token: response.data.token });
       return response;
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   searchTopics = ({ q }) => {
@@ -57,7 +76,7 @@ class WebApi {
       url: '/search/topics',
       method: 'get',
       params: { q }
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   logout = () => {
@@ -70,7 +89,7 @@ class WebApi {
       } catch (e) {
         reject(e);
       }
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   userFetch = ({ username }) => {
@@ -79,7 +98,7 @@ class WebApi {
     return this.$.request({
       url,
       method: 'get'
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   userUpdatePosition = ({ position }) => {
@@ -87,14 +106,14 @@ class WebApi {
       url: '/users/position',
       method: 'put',
       data: { position }
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicFetchCheckins = ({ tag }) => {
     return this.$.request({
       url: `/topics/${tag}/checkins`,
       method: 'get'
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicCreate = ({ tag }) => {
@@ -102,21 +121,21 @@ class WebApi {
       url: `/topics`,
       method: 'post',
       data: { tag }
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicDoCheckin = ({ tag }) => {
     return this.$.request({
       url: `/topics/${tag}/checkins`,
       method: 'put'
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicUndoCheckin = ({ tag }) => {
     return this.$.request({
       url: `/topics/${tag}/checkins`,
       method: 'delete'
-    }).catch (this._errorHandler);
+    }).then(this._responseHandler).catch (this._errorHandler);
   };
 }
 

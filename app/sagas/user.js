@@ -21,57 +21,57 @@ import webApiSaga from './webApiSaga';
 
 // Worker Saga : will be fired on USER_LOGIN_REQUESTED actions
 const userLogin = function*(action) {
-  try {
-    // Using facebook access token try to login user retrieving a bearer token for the following requests
-    const userLoginParams = { accessToken: action.payload };
-    const { token } = yield call(webApiSaga, 'facebookLogin', userLoginParams);
+  // Using facebook access token try to login user retrieving a bearer token for the following requests
+  const userLoginParams = { accessToken: action.payload };
+  const { error, token } = yield call(webApiSaga, 'facebookLogin', userLoginParams);
 
+  if (!error) {
     // Set the user logged and save the token into the store
     yield put(loginSucceeded(token));
 
     // Fetch user
     yield put(fetch());
-  } catch (e) {
-    yield put(loginFailed(e));
+  } else {
+    yield put(loginFailed(error));
   }
 };
 
 // Worker Saga : will be fired on USER_LOGOUT_REQUESTED actions
 const userLogout = function*() {
-  try {
-    // Logout the user
-    yield call(webApiSaga, 'logout');
+  // Logout the user
+  const { error } = yield call(webApiSaga, 'logout');
 
+  if (!error) {
     // Set the user as not logged and delete the token from the store
     yield put(logoutSucceeded());
-  } catch (e) {
-    yield put(logoutFailed(e));
+  } else {
+    yield put(logoutFailed(error));
   }
 };
 
 // Worker Saga : will be fired on USER_UPDATE_POSITION_REQUESTED actions
 const userUpdatePosition = function*(action) {
-  try {
-    // Update remote user position
-    const userUpdatePositionParams = { position: action.payload };
-    yield call(webApiSaga, 'userUpdatePosition', userUpdatePositionParams);
+  // Update remote user position
+  const userUpdatePositionParams = { position: action.payload };
+  const { error } = yield call(webApiSaga, 'userUpdatePosition', userUpdatePositionParams);
+  if (!error) {
     // Update store user position
     yield put(updatePositionSucceeded(action.payload));
-  } catch (e) {
-    yield put(updatePositionFailed(e));
+  } else {
+    yield put(updatePositionFailed(error));
   }
 };
 
 // Worker Saga : will be fired on USER_FETCH_REQUESTED actions
 const userFetch = function*(action) {
-  try {
-    // Fetch user
-    const userFetchParams = { position: action.payload };
-    const fetchedUser = yield call(webApiSaga, 'userFetch', userFetchParams);
+  // Fetch user
+  const userFetchParams = { position: action.payload };
+  const { error, ...fetchedUser } = yield call(webApiSaga, 'userFetch', userFetchParams);
+  if (!error) {
     // Update store user position
     yield put(fetchSucceeded(fetchedUser));
-  } catch (e) {
-    yield put(fetchFailed(e));
+  } else {
+    yield put(fetchFailed(error));
   }
 };
 

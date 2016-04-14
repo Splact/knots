@@ -20,56 +20,60 @@ import webApiSaga from './webApiSaga';
 
 // Worker Saga : will be fired on TOPIC_FETCH_REQUESTED actions
 const topicFetch = function*(action) {
-  try {
-    // Fetch topic
-    const topicFetchCheckinsParams = { tag: action.payload };
-    const { checkins } = yield call(webApiSaga, 'topicFetchCheckins', topicFetchCheckinsParams);
+  // Fetch topic
+  const topicFetchCheckinsParams = { tag: action.payload };
+  const { error, checkins } = yield call(webApiSaga, 'topicFetchCheckins', topicFetchCheckinsParams);
+
+  if (!error) {
     // Update store topic
     yield put(fetchSucceeded({
       tag: action.payload,
       checkins
     }));
-  } catch (e) {
-    yield put(fetchFailed(e));
+  } else {
+    yield put(fetchFailed(error));
   }
 };
 
 // Worker Saga : will be fired on TOPIC_CREATE_REQUESTED actions
 const topicCreate = function*(action) {
-  try {
-    // Create topic
-    const topicCreateParams = { tag: action.payload };
-    const topic = yield call(webApiSaga, 'topicCreate', topicCreateParams);
+  // Create topic
+  const topicCreateParams = { tag: action.payload };
+  const { error, ...topic } = yield call(webApiSaga, 'topicCreate', topicCreateParams);
+
+  if (!error) {
     // Update store topic
     yield put(createSucceeded(topic));
-  } catch (e) {
-    yield put(createFailed(e));
+  } else {
+    yield put(createFailed(error));
   }
 };
 
 // Worker Saga : will be fired on TOPIC_DO_CHECKIN_REQUESTED actions
 const topicDoCheckin = function*(action) {
-  try {
-    // Do Checkin
-    const topicDoCheckinParams = { tag: action.payload };
-    const { checkins } = yield call(webApiSaga, 'topicDoCheckin', topicDoCheckinParams);
+  // Do Checkin
+  const topicDoCheckinParams = { tag: action.payload };
+  const { error, checkins } = yield call(webApiSaga, 'topicDoCheckin', topicDoCheckinParams);
+
+  if (!error) {
     // Update store topic
     yield put(doCheckinSucceeded(checkins));
-  } catch (e) {
-    yield put(doCheckinFailed(e));
+  } else {
+    yield put(doCheckinFailed(error));
   }
 };
 
 // Worker Saga : will be fired on TOPIC_UNDO_CHECKIN_REQUESTED actions
 const topicUndoCheckin = function*(action) {
-  try {
-    // Undo Checkin
-    const topicUndoCheckinParams = { tag: action.payload };
-    const { checkins } = yield call(webApiSaga, 'topicUndoCheckin', topicUndoCheckinParams);
+  // Undo Checkin
+  const topicUndoCheckinParams = { tag: action.payload };
+  const { error, checkins } = yield call(webApiSaga, 'topicUndoCheckin', topicUndoCheckinParams);
+
+  if (!error) {
     // Update store topic
     yield put(undoCheckinSucceeded(checkins));
-  } catch (e) {
-    yield put(undoCheckinFailed(e));
+  } else {
+    yield put(undoCheckinFailed(error));
   }
 };
 

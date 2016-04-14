@@ -47,7 +47,7 @@ class WebApi {
         'access_token': accessToken
       }
     }).then((response) => {
-      this.updateBearerToken(response.data.token);
+      this.updateBearerToken({ token: response.data.token });
       return response;
     }).catch (this._errorHandler);
   };

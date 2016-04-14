@@ -10,25 +10,26 @@ export default class Prompt extends React.Component {
     let { icon, color, size, fixed, position, disabled, placeholder, empty } = this.props;
     const { text } = this.state;
 
-    if (!icon)
+    if (!icon) {
       icon = this.defaultIcon;
+    }
 
     const styles = {
       prompt: classnames('prompt', {
-        'prompt--primary'     : color === 'primary',
-        'prompt--success'     : color === 'success',
-        'prompt--info'        : color === 'info',
-        'prompt--warning'     : color === 'warning',
-        'prompt--error'       : color === 'error',
-        'prompt--small'       : size === 'small',
-        'prompt--medium'      : size === 'medium',
-        'prompt--big'         : size === 'big',
-        'prompt--fixed'       : fixed,
-        'prompt--top-left'    : position === 'top-left',
-        'prompt--top-right'   : position === 'top-right',
-        'prompt--bottom-left' : position === 'bottom-left',
+        'prompt--primary': color === 'primary',
+        'prompt--success': color === 'success',
+        'prompt--info': color === 'info',
+        'prompt--warning': color === 'warning',
+        'prompt--error': color === 'error',
+        'prompt--small': size === 'small',
+        'prompt--medium': size === 'medium',
+        'prompt--big': size === 'big',
+        'prompt--fixed': fixed,
+        'prompt--top-left': position === 'top-left',
+        'prompt--top-right': position === 'top-right',
+        'prompt--bottom-left': position === 'bottom-left',
         'prompt--bottom-right': position === 'bottom-right',
-        'prompt--disabled'    : disabled === true
+        'prompt--disabled': disabled === true
       }),
       icon: classnames('fa', `fa-${icon}`),
       empty: classnames('fa', 'fa-times')

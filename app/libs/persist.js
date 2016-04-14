@@ -6,10 +6,12 @@ export default function(alt, storage, storeName) {
   try {
     let stores = JSON.parse(storage.get(storeName));
 
-    stores.TopicStore = {
-      tag: null,
-      checkins: []
-    };
+    if (stores) {
+      stores.TopicStore = {
+        tag: null,
+        checkins: []
+      };
+    }
 
     stores = JSON.stringify(stores);
 

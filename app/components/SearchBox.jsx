@@ -28,6 +28,8 @@ function mapDispatchToProps(dispatch) {
       if ((tag.length > 2) && (!results.length)) {
         dispatch(create(tag));
         dispatch(emptyResults());
+        const path = `/${tag}`;
+        browserHistory.push(path);
       }
     },
     onQueryChange: ({ newText }) => {
@@ -55,7 +57,8 @@ export default class SearchBox extends React.Component {
         'search-box--results--hidden': !query
       }),
       topicResult: classnames('search-box--topic-result'),
-      createTopic: classnames('search-box--create-topic')
+      createTopic: classnames('search-box--create-topic'),
+      pendingSearch: classnames('search-box--pending-search')
     };
 
     const topicCreationHandler = onTopicCreation.bind(this, query, results);

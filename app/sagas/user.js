@@ -26,11 +26,11 @@ const userLogin = function*(action) {
     const userLoginParams = { accessToken: action.payload };
     const { token } = yield call(webApiSaga, 'facebookLogin', userLoginParams);
 
-    // Fetch user
-    yield put(fetch());
-
     // Set the user logged and save the token into the store
     yield put(loginSucceeded(token));
+
+    // Fetch user
+    yield put(fetch());
   } catch (e) {
     yield put(loginFailed(e));
   }

@@ -1,4 +1,16 @@
 /// Helper to size an element
+/// @author Dario Carella
+/// @param {String} $media
+@mixin respond-to($media) {
+  @if $media == medium-screens {
+    @media only screen and (min-width: $break-small) { @content; }
+  }
+  @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+}
+
+/// Helper to size an element
 /// @author Hugo Giraudel
 /// @param {Length} $width
 /// @param {Length} $height

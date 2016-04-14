@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import Map from './Map';
 import Profile from './Profile';
 import CheckinButton from './CheckinButton';
+import AjaxLoader from './AjaxLoader';
 import SearchBox from './SearchBox';
 
 function mapStateToProps() {
@@ -40,7 +41,8 @@ export default class App extends React.Component {
         <Profile facebookOptions={config.facebook} />
         <SearchBox />
         <CheckinButton />
-        <Map options={config.map.options}/>
+        <Map options={config.map.options} />
+        <AjaxLoader />
       </div>
     );
   };

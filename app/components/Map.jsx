@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { default as FaSpinner } from 'react-icons/lib/fa/spinner';
 import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsLoader';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 import { default as canUseDOM } from 'can-use-dom';
-import classnames from 'classnames';
-import ProfileActions from '../actions/ProfileActions';
+import { updatePosition } from '../actions/user';
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -15,6 +16,23 @@ const geolocation = (
   }
 );
 
+function mapStateToProps(state) {
+  const { tag, checkins } = state.topic;
+
+  return {
+    markers: checkins || [],
+    title: tag || null
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    onPositionUpdated: (position) => {
+      dispatch(updatePosition(position));
+    }
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Map extends React.Component {
 
   static version = 22;
@@ -28,6 +46,9 @@ export default class Map extends React.Component {
   }
 
   componentDidMount() {
+
+    const { onPositionUpdated, options } = this.props;
+
     // check for gps positioning
     geolocation.getCurrentPosition((position) => {
       const newPosition = {
@@ -35,14 +56,14 @@ export default class Map extends React.Component {
         lng: position.coords.longitude
       };
 
-      ProfileActions.updatePosition(newPosition);
+      onPositionUpdated(newPosition);
 
       this.setState({
         center: newPosition
       });
     }, () => {
       this.setState({
-        center: this.props.options.defaultCenter
+        center: options.defaultCenter
       });
     });
   }
@@ -98,8 +119,8 @@ export default class Map extends React.Component {
             >
               {markers.map(marker => (
                 <Marker
-                  position={{ lat: marker.lat, lng: marker.lng }}
-                  key={ marker.id }
+                  position={marker.position}
+                  key={ marker.username }
                 />
               ))}
             </MarkerClusterer>

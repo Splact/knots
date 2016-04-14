@@ -1,31 +1,35 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import FacebookLogin from 'react-facebook-login';
-import ProfileActions from '../actions/ProfileActions';
+import { login, logout } from '../actions/user';
 
-export default class Profile extends React.Component {
+function mapStateToProps(state) {
+  const { token, ...user } = state.user;
 
-  state = {
-    isLogged: false,
-    isLoading: false
+  return {
+    bearerToken: token,
+    ...user
   };
-
-  componentWillMount() {
-    const { bearerToken, onLogin } = this.props;
-    if (bearerToken) {
-      this.setState({ isLogged: true });
-      if (onLogin) {
-        onLogin();
-      }
-      ProfileActions.updateBearerToken(bearerToken);
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    onLogin: (accessToken) => {
+      dispatch(login(accessToken));
+    },
+    onLogout: () => {
+      dispatch(logout());
     }
-  }
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Profile extends React.Component {
 
   render = () => {
 
-    const { facebookOptions, defaultPicture, username, picture } = this.props;
+    const { facebookOptions, defaultPicture, username, picture, isLogged, onLogout } = this.props;
     const facebookAppId = facebookOptions.appId || null;
-    const { isLogged } = this.state;
     const pictureUrl = picture || defaultPicture;
 
     // defining element css classes
@@ -43,7 +47,7 @@ export default class Profile extends React.Component {
           <div className={styles.picture}>
             <img src={pictureUrl}/>
           </div>
-          <button className={styles.logoutButton} onClick={this.logout}>logout</button>
+          <button className={styles.logoutButton} onClick={onLogout}>logout</button>
         </div>
       );
     } else {
@@ -54,35 +58,21 @@ export default class Profile extends React.Component {
             scope={'public_profile'}
             autoLoad={false}
             cssClass={styles.facebookLogin}
-            callback={this.responseFacebook}
+            callback={this.handleFacebookResponse}
             icon={'fa-facebook'} />
         </div>
       );
     }
   };
 
-  responseFacebook = (response) => {
+  handleFacebookResponse = (response) => {
     // retrieve relevant data from response
     const { status, accessToken } = response;
     const { onLogin } = this.props;
 
     if (!status || status !== 'not authorized') {
-      ProfileActions.login(accessToken);
-      this.setState({
-        isLogged: true
-      });
-      if (onLogin) onLogin();
+      onLogin(accessToken);
     }
-  };
-
-  logout = () => {
-    const { onLogout } = this.props;
-
-    ProfileActions.logout();
-    this.setState({
-      isLogged: false
-    });
-    if (onLogout) onLogout();
   };
 
 }

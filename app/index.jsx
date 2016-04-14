@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
+import { Provider } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
+import configureStore from './libs/configureStore';
 
 import App from './components/App';
 
-import alt from './libs/alt';
-import storage from './libs/storage';
-import persist from './libs/persist';
+const store = configureStore();
 
-persist(alt, storage, 'knots');
+const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={App}/>
-    <Route path="/:topic" component={App}/>
-  </Router>
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/" component={App}/>
+      <Route path="/:topic" component={App}/>
+    </Router>
+  </Provider>
 ), document.getElementById('knots'));

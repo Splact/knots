@@ -1,4 +1,11 @@
 export default {
+  localforage: {
+    key: 'knots',
+    name: 'knots',
+    version: 1.0,
+    storeName: 'knots_balloons',
+    description: 'Persistent storage for Knots Balloons'
+  },
   api: {
     baseURL: 'http://api.server.dev:3000/v1'
   },

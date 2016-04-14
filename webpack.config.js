@@ -22,6 +22,7 @@ process.env.BABEL_ENV = TARGET;
 
 const common = {
   entry: {
+    polyfill: 'babel-polyfill',
     app: PATHS.app,
     style: PATHS.style
   },

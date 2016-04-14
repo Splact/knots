@@ -59,6 +59,7 @@
     "alt-container": "^1.0.2",
     "alt-utils": "^1.0.0",
     "axios": "^0.9.1",
+    "babel-polyfill": "^6.7.4",
     "can-use-dom": "^0.1.0",
     "classnames": "^2.2.3",
     "json-loader": "^0.5.4",
@@ -74,6 +75,15 @@
     "react-facebook-login": "^2.1.2",
     "react-google-maps": "^4.9.1",
     "react-icons": "^1.0.3",
-    "react-router": "^2.0.1"
+    "react-redux": "^4.4.4",
+    "react-router": "^2.0.1",
+    "react-router-redux": "^4.0.2",
+    "redux": "^3.4.0",
+    "redux-actions": "^0.9.1",
+    "redux-logger": "^2.6.1",
+    "redux-saga": "^0.9.5",
+    "redux-storage": "^4.0.0",
+    "redux-storage-decorator-debounce": "^1.0.0",
+    "redux-storage-engine-localforage": "^1.0.0"
   }
 }

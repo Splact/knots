@@ -1,21 +1,51 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Prompt from './Prompt';
 import { browserHistory } from 'react-router';
-import SearchAction from '../actions/SearchActions';
-import TopicActions from '../actions/TopicActions';
+import { searchTopics, emptyResults } from '../actions/search';
+import { fetch, create } from '../actions/topic';
 
+function mapStateToProps(state) {
+  const { results, query, isSearching } = state.search;
+
+  return {
+    results,
+    query,
+    isSearching
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    onResultClick: (tag) => {
+      const path = `/${tag}`;
+      browserHistory.push(path);
+
+      dispatch(fetch(tag));
+      dispatch(emptyResults());
+    },
+    onTopicCreation: (tag, results) => {
+      if ((tag.length > 2) && (!results.length)) {
+        dispatch(create(tag));
+        dispatch(emptyResults());
+      }
+    },
+    onQueryChange: ({ newText }) => {
+      if (newText.length < 3) {
+        dispatch(emptyResults());
+      } else {
+        dispatch(searchTopics(newText));
+      }
+    }
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class SearchBox extends React.Component {
-
-  state = {};
-
-  componentWillMount() {
-    //const { results } = this.props;
-  }
 
   render = () => {
 
-    const { results, query } = this.props;
+    const { results, query, isSearching, onResultClick, onTopicCreation, onQueryChange } = this.props;
 
     // defining element css classes
     const styles = {
@@ -28,22 +58,26 @@ export default class SearchBox extends React.Component {
       createTopic: classnames('search-box--create-topic')
     };
 
-    let ulChildren;
+    const topicCreationHandler = onTopicCreation.bind(this, query, results);
+    const queryChangeHandler = onQueryChange;
 
+    let ulChildren;
     if (results.length) {
-      ulChildren = results.map(result =>
-        <li
-          className={styles.topicResult}
-          key={result.tag}
-          onClick={this.handleResultClick.bind(this, { tag: result.tag })}>#{result.tag} ({result.usersCount})</li>
-      );
-    } else {
-      const handleTopicCreation = this.handleTopicCreation.bind(this, { newText: query });
+      ulChildren = results.map(result => {
+        const resultClickHandler = onResultClick.bind(this, result.tag);
+        return (
+          <li
+            className={styles.topicResult}
+            key={result.tag}
+            onClick={resultClickHandler}>#{result.tag} ({result.usersCount})</li>
+        );
+      });
+    } else if (query && !isSearching) {
       ulChildren = (
         <li
           className={styles.createTopic}
           key={query}
-          onClick={handleTopicCreation}>Be the first on <strong>#{query}</strong></li>
+          onClick={topicCreationHandler}>Be the first on <strong>#{query}</strong></li>
       );
     }
 
@@ -53,35 +87,11 @@ export default class SearchBox extends React.Component {
           placeholder={'Search tags'}
           size={'big'}
           icon={'search'}
-          onChange={this.handleChange}
-          onEnter={this.handleTopicCreation}
+          onChange={queryChangeHandler}
+          onEnter={topicCreationHandler}
           empty={true} />
         <ul className={styles.results}>{ulChildren}</ul>
       </div>
     );
   };
-
-  handleChange({ newText }) {
-    if (newText.length < 3) {
-      SearchAction.emptyResults();
-    } else {
-      SearchAction.searchTopics({ q: newText });
-    }
-  }
-
-  handleResultClick({ tag }) {
-    const path = `/${tag}`;
-    browserHistory.push(path);
-    TopicActions.read({ tag });
-    SearchAction.emptyResults();
-  }
-
-  handleTopicCreation({ newText }) {
-    const { results } = this.props;
-
-    if ((newText.length > 2) && (!results.length)) {
-      TopicActions.create({tag: newText});
-      SearchAction.emptyResults();
-    }
-  }
 }

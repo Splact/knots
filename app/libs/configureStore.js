@@ -3,23 +3,24 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import storage from 'redux-storage';
 import createEngine from 'redux-storage-engine-localforage';
 import debounce from 'redux-storage-decorator-debounce';
+import filter from 'redux-storage-decorator-filter';
 import createSagaMiddleware from 'redux-saga';
 import startSagas from '../sagas/start';
 import searchSagas from '../sagas/search';
 import topicSagas from '../sagas/topic';
 import userSagas from '../sagas/user';
 import rootReducer from '../reducers/root';
-import { persistActionTypes } from '../actions/types';
 
 // Setup sagas
 const sagaMiddleware = createSagaMiddleware(...startSagas, ...userSagas, ...searchSagas, ...topicSagas);
 
 // Setup storage engine and middleware
 const engine = createEngine(config.localforage.key, config.localforage);
-const debouncedEngine = debounce(engine, 1500);
+const filteredEngine = filter(engine, ['user'], []);
+const debouncedfilteredEngine = debounce(filteredEngine, 1500);
 // ISSUE: redux-storage doesn't intercept actions fired by redux-saga
-const storageMiddleware = storage.createMiddleware(debouncedEngine, [], persistActionTypes);
-const load = storage.createLoader(debouncedEngine);
+const storageMiddleware = storage.createMiddleware(debouncedfilteredEngine);
+const load = storage.createLoader(debouncedfilteredEngine);
 
 // Wrap rootReducer to let operate on storage
 const persistReducer = storage.reducer(rootReducer);

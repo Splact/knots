@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Prompt from './Prompt';
+import SearchItem from './SearchItem';
 import { browserHistory } from 'react-router';
 import { searchTopics, emptyResults } from '../actions/search';
 import { fetch, create } from '../actions/topic';
+import parseQueryToTag from '../libs/parseQueryToTag';
 
 function mapStateToProps(state) {
   const { results, query, isSearching } = state.search;
@@ -56,12 +58,11 @@ export default class SearchBox extends React.Component {
         'search-box--results': true,
         'search-box--results--hidden': !query
       }),
-      topicResult: classnames('search-box--topic-result'),
-      createTopic: classnames('search-box--create-topic'),
       pendingSearch: classnames('search-box--pending-search')
     };
 
-    const topicCreationHandler = onTopicCreation.bind(this, query, results);
+    const sanitizedTag = parseQueryToTag(query);
+    const topicCreationHandler = onTopicCreation.bind(this, sanitizedTag, results);
     const queryChangeHandler = onQueryChange;
 
     let ulChildren;
@@ -69,18 +70,20 @@ export default class SearchBox extends React.Component {
       ulChildren = results.map(result => {
         const resultClickHandler = onResultClick.bind(this, result.tag);
         return (
-          <li
-            className={styles.topicResult}
+          <SearchItem
             key={result.tag}
-            onClick={resultClickHandler}>#{result.tag} ({result.usersCount})</li>
+            tag={result.tag}
+            checkinsCount={result.usersCount}
+            onClick={resultClickHandler} />
         );
       });
     } else if (query && !isSearching) {
       ulChildren = (
-        <li
-          className={styles.createTopic}
+        <SearchItem
           key={query}
-          onClick={topicCreationHandler}>Be the first on <strong>#{query}</strong></li>
+          tag={sanitizedTag}
+          isCreate
+          onClick={topicCreationHandler} />
       );
     }
 

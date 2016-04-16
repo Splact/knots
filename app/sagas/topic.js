@@ -39,11 +39,14 @@ const topicFetch = function*(action) {
 const topicCreate = function*(action) {
   // Create topic
   const topicCreateParams = { tag: action.payload };
-  const { error, ...topic } = yield call(webApiSaga, 'topicCreate', topicCreateParams);
+  const { error, checkins } = yield call(webApiSaga, 'topicCreate', topicCreateParams);
 
   if (!error) {
     // Update store topic
-    yield put(createSucceeded(topic));
+    yield put(createSucceeded({
+      tag: action.payload,
+      checkins
+    }));
   } else {
     yield put(createFailed(error));
   }

@@ -41,7 +41,7 @@ export default class App extends React.Component {
         <Profile facebookOptions={config.facebook} />
         <SearchBox />
         <CheckinButton />
-        <Map options={config.map.options} />
+        <Map options={config.map.options} showFakeMarkers />
         <AjaxLoader />
       </div>
     );

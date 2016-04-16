@@ -7,6 +7,7 @@ import { GoogleMap, Marker } from 'react-google-maps';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
 import { default as canUseDOM } from 'can-use-dom';
 import { updatePosition } from '../actions/user';
+import generateFakeMarkers from '../libs/fakeMarkers';
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -19,8 +20,14 @@ const geolocation = (
 function mapStateToProps(state) {
   const { tag, checkins } = state.topic;
 
+  // map checkins to markers
+  const markers = checkins.map((checkin) => ({
+    id: checkin.username,
+    position: checkin.position
+  }));
+
   return {
-    markers: checkins || [],
+    markers,
     title: tag || null
   };
 }
@@ -69,9 +76,10 @@ export default class Map extends React.Component {
   }
 
   render = () => {
-    const { markers, options, title, ...props } = this.props;
+    const { options, title, showFakeMarkers, ...props } = this.props;
     const { defaultZoom, defaultCenter } = options;
     const { center } = this.state;
+    let { markers } = this.props;
 
     const styles = {
       map: classnames('map'),
@@ -79,6 +87,12 @@ export default class Map extends React.Component {
     };
 
     const titleElement = (title) ? <div className={styles.title}>{title}</div> : null;
+
+    if (showFakeMarkers && markers.length) {
+      const fakeMarkers = generateFakeMarkers();
+
+      markers = [ ...markers, ...fakeMarkers];
+    }
 
     return (
       <ScriptjsLoader
@@ -119,8 +133,8 @@ export default class Map extends React.Component {
             >
               {markers.map(marker => (
                 <Marker
+                  key={ marker.id }
                   position={marker.position}
-                  key={ marker.username }
                 />
               ))}
             </MarkerClusterer>

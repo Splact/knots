@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 function mapStateToProps(state) {
-  const { user, topic, search } = state;
+  const { user, topic, search, app } = state;
   return {
     pendingStates: {
       isLoggingIn: user.isLoggingIn,
@@ -13,7 +13,8 @@ function mapStateToProps(state) {
       isChangingCheckin: topic.isChangingCheckin,
       isCreatingTopic: topic.isCreating,
       isFetchingTopic: topic.isFetching,
-      isSearching: search.isSearching
+      isSearching: search.isSearching,
+      isAppNotReady: !app.isReady
     }
   };
 }

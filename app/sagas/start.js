@@ -1,6 +1,9 @@
 import { takeLatest } from 'redux-saga';
-import { call } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { REDUX_STORAGE_LOAD } from '../actions/types';
+import {
+  appReady
+} from '../actions/app';
 import webApi from '../libs/webApi';
 
 // Worker Saga : will be fired on REDUX_STORAGE_LOAD actions
@@ -9,6 +12,7 @@ const userUpdateToken = function*(action) {
     // Update bearer token for api calls
     const updateBearerTokenParams = {token: action.payload.user.token};
     yield call(webApi.updateBearerToken, updateBearerTokenParams);
+    yield put(appReady());
   }
 };
 

@@ -34,6 +34,17 @@ class WebApi {
     throw error;
   }
 
+  _needToken = () => {
+    const token = this.bearerToken;
+    return new Promise((resolve, reject) => {
+      if (token) {
+        resolve({status: 200, data: {}});
+      } else {
+        reject(new Error('Authentication required.'));
+      }
+    });
+  };
+
   updateBearerToken = ({ token }) => {
     const self = this;
     return new Promise((resolve, reject) => {
@@ -90,19 +101,28 @@ class WebApi {
   };
 
   userFetch = ({ username }) => {
-    const url = (!username) ? '/users/me' : `/users/${username}`;
-
-    return this.$.request({
-      url,
-      method: 'get'
-    }).then(this._responseHandler).catch (this._errorHandler);
+    if (!username) {
+      return this._needToken().then(() => {
+        return this.$.request({
+          url: '/users/me',
+          method: 'get'
+        });
+      }).then(this._responseHandler).catch (this._errorHandler);
+    } else {
+      return this.$.request({
+        url: `/users/${username}`,
+        method: 'get'
+      }).then(this._responseHandler).catch (this._errorHandler);
+    }
   };
 
   userUpdatePosition = ({ position }) => {
-    return this.$.request({
-      url: '/users/position',
-      method: 'put',
-      data: { position }
+    return this._needToken().then(() => {
+      return this.$.request({
+        url: '/users/position',
+        method: 'put',
+        data: { position }
+      });
     }).then(this._responseHandler).catch (this._errorHandler);
   };
 
@@ -114,24 +134,30 @@ class WebApi {
   };
 
   topicCreate = ({ tag }) => {
-    return this.$.request({
-      url: `/topics`,
-      method: 'post',
-      data: { tag }
+    return this._needToken().then(() => {
+      return this.$.request({
+        url: `/topics`,
+        method: 'post',
+        data  : {tag}
+      });
     }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicDoCheckin = ({ tag }) => {
-    return this.$.request({
-      url: `/topics/${tag}/checkins`,
-      method: 'put'
+    return this._needToken().then(() => {
+      return this.$.request({
+        url: `/topics/${tag}/checkins`,
+        method: 'put'
+      });
     }).then(this._responseHandler).catch (this._errorHandler);
   };
 
   topicUndoCheckin = ({ tag }) => {
-    return this.$.request({
-      url: `/topics/${tag}/checkins`,
-      method: 'delete'
+    return this._needToken().then(() => {
+      return this.$.request({
+        url: `/topics/${tag}/checkins`,
+        method: 'delete'
+      });
     }).then(this._responseHandler).catch (this._errorHandler);
   };
 }

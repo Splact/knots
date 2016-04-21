@@ -9,10 +9,7 @@ class WebApi {
   }
 
   _responseHandler(response) {
-    return {
-      error: null,
-      ...response.data
-    };
+    return response.data;
   }
   _errorHandler(response) {
     let error;
@@ -34,7 +31,7 @@ class WebApi {
       };
     }
 
-    return { error };
+    throw error;
   }
 
   updateBearerToken = ({ token }) => {

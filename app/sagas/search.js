@@ -7,18 +7,18 @@ import {
   searchTopicsSucceeded,
   searchTopicsFailed
 } from '../actions/search';
-import webApiSaga from './webApiSaga';
+import webApi from '../libs/webApi';
 
 // Worker Saga : will be fired on SEARCH_TOPICS_REQUESTED actions
 const searchTopics = function*(action) {
-  // Do search
-  const searchTopicsParams = { q: action.payload };
-  const { error, results } = yield call(webApiSaga, 'searchTopics', searchTopicsParams);
+  try {
+    // Do search
+    const searchTopicsParams = { q: action.payload };
+    const { results } = yield call(webApi.searchTopics, searchTopicsParams);
 
-  if (!error) {
     // Update store search results
     yield put(searchTopicsSucceeded({ results, query: action.payload }));
-  } else {
+  } catch (error) {
     yield put(searchTopicsFailed(error));
   }
 };

@@ -1,6 +1,8 @@
 import config from '../constants/config';
 import { createStore, applyMiddleware, compose } from 'redux';
 import storage from 'redux-storage';
+import { routerMiddleware } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 import createEngine from 'redux-storage-engine-localforage';
 import debounce from 'redux-storage-decorator-debounce';
 import filter from 'redux-storage-decorator-filter';
@@ -22,6 +24,9 @@ const debouncedfilteredEngine = debounce(filteredEngine, 1500);
 const storageMiddleware = storage.createMiddleware(debouncedfilteredEngine);
 const load = storage.createLoader(debouncedfilteredEngine);
 
+// Setup router middleware
+const reduxRouterMiddleware = routerMiddleware(browserHistory);
+
 // Wrap rootReducer to let operate on storage
 const persistReducer = storage.reducer(rootReducer);
 
@@ -32,7 +37,8 @@ export default function configureStore(initialState) {
     compose(
       applyMiddleware(
         storageMiddleware,
-        sagaMiddleware
+        sagaMiddleware,
+        reduxRouterMiddleware
       ),
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )

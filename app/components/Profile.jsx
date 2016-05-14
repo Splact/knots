@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import FacebookLogin from 'react-facebook-login';
-import { login, logout } from '../actions/user';
+import { logout } from '../actions/user';
 
 function mapStateToProps(state) {
   const { token, ...user } = state.user;
@@ -14,9 +13,6 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    onLogin: (accessToken) => {
-      dispatch(login(accessToken));
-    },
     onLogout: () => {
       dispatch(logout());
     }
@@ -28,8 +24,7 @@ export default class Profile extends React.Component {
 
   render = () => {
 
-    const { facebookOptions, defaultPicture, username, picture, isLogged, onLogout } = this.props;
-    const facebookAppId = facebookOptions.appId || null;
+    const { defaultPicture, username, picture, isLogged, onLogout } = this.props;
     const pictureUrl = picture || defaultPicture;
 
     // defining element css classes
@@ -51,27 +46,7 @@ export default class Profile extends React.Component {
         </div>
       );
     } else {
-      return (
-        <div className={styles.wrapper}>
-          <FacebookLogin
-            appId={facebookAppId}
-            scope={'public_profile'}
-            autoLoad={false}
-            cssClass={styles.facebookLogin}
-            callback={this.handleFacebookResponse}
-            icon={'fa-facebook'} />
-        </div>
-      );
-    }
-  };
-
-  handleFacebookResponse = (response) => {
-    // retrieve relevant data from response
-    const { status, accessToken } = response;
-    const { onLogin } = this.props;
-
-    if (!status || status !== 'not authorized') {
-      onLogin(accessToken);
+      return null;
     }
   };
 

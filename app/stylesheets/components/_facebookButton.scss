@@ -1,0 +1,45 @@
+.facebook-button {
+  width: 100%;
+  min-width: 32rem;
+  max-width: 36rem;
+
+  box-sizing: border-box;
+
+  margin: auto;
+  padding: 0 3rem;
+
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  right: 0;
+
+  z-index: z('floating');
+
+  .facebook-button--facebook-login {
+    display: block;
+    width: 100%;
+
+    background: #4c69ba;
+    border: 1px solid #4c69ba;
+    border-radius: 4rem;
+
+    padding: 1em 2em;
+
+    color: #fff;
+    cursor: pointer;
+    font-family: Helvetica,sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color .3s, border-color .3s;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+
+    @extend %floating-box;
+
+    .fa {
+      margin-right: 0.35em;
+    }
+  }
+}

@@ -127,6 +127,7 @@ export default class Map extends React.Component {
             onCenterChanged={this.handleCenterChanged}
           >
             <MarkerClusterer
+              imagePath="https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/m"
               averageCenter
               enableRetinaIcons
               gridSize={ 60 }

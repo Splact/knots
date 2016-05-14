@@ -7,6 +7,7 @@ import classnames from 'classnames';
 
 import Map from './Map';
 import Profile from './Profile';
+import FacebookButton from './FacebookButton';
 import CheckinButton from './CheckinButton';
 import AjaxLoader from './AjaxLoader';
 import SearchBox from './SearchBox';
@@ -38,7 +39,8 @@ export default class App extends React.Component {
 
     return (
       <div className={wrapperClasses}>
-        <Profile facebookOptions={config.facebook} />
+        <FacebookButton />
+        <Profile />
         <SearchBox />
         <CheckinButton />
         <Map options={config.map.options} showFakeMarkers />

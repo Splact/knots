@@ -37,31 +37,6 @@
     @extend %floating-box;
   }
 
-  .profile--facebook-login {
-    display: block;
-    background: #4c69ba;
-    border: 1px solid #4c69ba;
-    border-radius: 4rem;
-    padding: 1em 2em;
-    margin: auto;
-    color: #fff;
-    cursor: pointer;
-    font-family: Helvetica,sans-serif;
-    font-weight: 700;
-    font-size: 1.6rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background-color .3s, border-color .3s;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-
-    @extend %floating-box;
-
-    .fa {
-      margin-right: 0.35em;
-    }
-  }
-
   .profile--display-name {
     padding: 1em;
   }

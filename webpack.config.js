@@ -15,71 +15,69 @@ const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
   test: path.join(__dirname, 'tests'),
-  style: path.join(__dirname, 'app/stylesheets/main.scss')
+  style: path.join(__dirname, 'app/stylesheets/main.scss'),
 };
 
 process.env.BABEL_ENV = TARGET;
 
 const common = {
   entry: {
-    polyfill: 'babel-polyfill',
-    app: PATHS.app,
-    style: PATHS.style
+    app: ['babel-polyfill', PATHS.app, PATHS.style],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
   },
   output: {
     path: PATHS.build,
     // Output using entry name
-    filename: '[name].js'
+    filename: '[name].js',
   },
   module: {
     preLoaders: [
       {
         test: /\.jsx?$/,
-        loaders: ['eslint', 'jscs'],
-        include: PATHS.app
+        loaders: ['eslint'],
+        include: PATHS.app,
       },
       {
         test: /\.scss$/,
         loaders: ['postcss'],
-        include: PATHS.style
-      }
+        include: PATHS.style,
+      },
     ],
     loaders: [
       // JSX
       {
         test: /\.jsx?$/,
         loaders: ['babel?cacheDirectory'],
-        include: PATHS.app
+        include: PATHS.app,
       },
       // Images
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?limit=100000',
-        include: PATHS.app
-      }
-    ]
+        include: PATHS.app,
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'node_modules/html-webpack-template/index.ejs',
       title: 'Knots',
       appMountId: 'knots',
-      inject: false
-    })
+      inject: false,
+    }),
   ],
-  postcss: function () {
-    return [stylelint({
+  postcss: () => [
+    stylelint({
       rules: {
-        'color-hex-case': 'lower'
-      }
-    })];
-  }
+        'color-hex-case': 'lower',
+      },
+    }),
+  ],
 };
 
-if(TARGET === 'start' || !TARGET) {
+if (TARGET === 'start' || !TARGET) {
   module.exports = merge(common, {
     devtool: 'eval-source-map',
     devServer: {
@@ -94,7 +92,7 @@ if(TARGET === 'start' || !TARGET) {
       // parse host and port from env so this is easy
       // to customize
       host: process.env.HOST,
-      port: process.env.PORT
+      port: process.env.PORT,
     },
     module: {
       loaders: [
@@ -103,34 +101,33 @@ if(TARGET === 'start' || !TARGET) {
         {
           test: /\.scss$/,
           loader: 'style!css!sass',
-          include: PATHS.style
-        }
-      ]
+          include: PATHS.style,
+          exclude: './node_modules',
+        },
+      ],
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new NpmInstallPlugin({
-        save: true // --save
-      })
-    ]
+        save: true, // --save
+      }),
+    ],
   });
 }
 
-if(TARGET === 'build' || TARGET === 'stats') {
+if (TARGET === 'build' || TARGET === 'stats') {
   module.exports = merge(common, {
     // Define vendor entry point needed for splitting
     entry: {
-      vendor: Object.keys(pkg.dependencies).filter(function(v) {
-        // Exclude alt-utils as it won't work with this setup
-        // due to the way the package has been designed
-        // (no package.json main).
-        return v !== 'alt-utils';
-      })
+      // Exclude alt-utils as it won't work with this setup
+      // due to the way the package has been designed
+      // (no package.json main).
+      vendor: Object.keys(pkg.dependencies).filter((v) => v !== 'alt-utils'),
     },
     output: {
       path: PATHS.build,
       filename: '[name].[chunkhash].js',
-      chunkFilename: '[chunkhash].js'
+      chunkFilename: '[chunkhash].js',
     },
     module: {
       loaders: [
@@ -138,9 +135,9 @@ if(TARGET === 'build' || TARGET === 'stats') {
         {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract('style', 'css!sass'),
-          include: PATHS.app
-        }
-      ]
+          include: PATHS.app,
+        },
+      ],
     },
     plugins: [
       new CleanPlugin([PATHS.build]),
@@ -150,13 +147,13 @@ if(TARGET === 'build' || TARGET === 'stats') {
 
       // Extract vendor and manifest files
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest']
+        names: ['vendor', 'manifest'],
       }),
       // Setting DefinePlugin affects React library size!
       // DefinePlugin replaces content "as is" so we need some extra quotes
       // for the generated code to make sense
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"'
+        'process.env.NODE_ENV': '"production"',
 
         // You can set this to JSON.stringify('development') for your
         // development target to force NODE_ENV to development mode
@@ -164,44 +161,44 @@ if(TARGET === 'build' || TARGET === 'stats') {
       }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
-          warnings: false
-        }
-      })
-    ]
+          warnings: false,
+        },
+      }),
+    ],
   });
 }
 
-if(TARGET === 'test' || TARGET === 'tdd') {
+if (TARGET === 'test' || TARGET === 'tdd') {
   module.exports = merge(common, {
     entry: {}, // karma will set this
     output: {}, // karma will set this
     devtool: 'inline-source-map',
     resolve: {
       alias: {
-        'app': PATHS.app
-      }
+        app: PATHS.app,
+      },
     },
     module: {
       preLoaders: [
         {
           test: /\.jsx?$/,
           loaders: ['isparta-instrumenter'],
-          include: PATHS.app
-        }
+          include: PATHS.app,
+        },
       ],
       loaders: [
         // Define development specific CSS setup
         {
           test: /\.css$/,
           loaders: ['style', 'css'],
-          include: PATHS.app
+          include: PATHS.app,
         },
         {
           test: /\.jsx?$/,
           loaders: ['babel'],
-          include: PATHS.test
-        }
-      ]
-    }
+          include: PATHS.test,
+        },
+      ],
+    },
   });
 }

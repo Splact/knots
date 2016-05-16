@@ -1,5 +1,5 @@
 import config from '../constants/config';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetch } from '../actions/topic';
 
@@ -12,6 +12,12 @@ import CheckinButton from './CheckinButton';
 import AjaxLoader from './AjaxLoader';
 import SearchBox from './SearchBox';
 
+const propTypes = {
+  params: PropTypes.object,
+  onTopicFetch: PropTypes.func,
+};
+const defaultProps = {};
+
 function mapStateToProps() {
   return {};
 }
@@ -21,12 +27,17 @@ function mapDispatchToProps(dispatch) {
       if (tag) {
         dispatch(fetch(tag));
       }
-    }
+    },
   };
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class App extends React.Component {
+class App extends React.Component {
+
+  propTypes: {
+    params: React.PropTypes.object,
+    onTopicFetch: React.PropTypes.func
+  }
 
   componentWillMount() {
     const { params, onTopicFetch } = this.props;
@@ -50,3 +61,7 @@ export default class App extends React.Component {
   };
 }
 
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
+
+export default App;

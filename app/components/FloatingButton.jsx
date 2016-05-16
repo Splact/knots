@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
-export default class FloatingButton extends React.Component {
+const propTypes = {
+  icon: PropTypes.string,
+  color: PropTypes.string,
+  size: PropTypes.string,
+  fixed: PropTypes.bool,
+  position: PropTypes.object,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func,
+};
+const defaultProps = {};
+
+class FloatingButton extends React.Component {
+  onClickHandle = () => {
+    const { onClick, disabled } = this.props;
+
+    if (disabled === true) {
+      return false;
+    }
+
+    return onClick();
+  };
   defaultIcon = 'plus';
   render = () => {
-    let { icon, color, size, fixed, position, disabled } = this.props;
+    const { color, size, fixed, position, disabled } = this.props;
 
-    if (!icon) {
-      icon = this.defaultIcon;
-    }
+    const icon = this.props.icon || this.defaultIcon;
 
     let fbClasses = classnames('floating-button', {
       'floating-button--primary': color === 'primary',
@@ -24,27 +42,23 @@ export default class FloatingButton extends React.Component {
       'floating-button--top-right': position === 'top-right',
       'floating-button--bottom-left': position === 'bottom-left',
       'floating-button--bottom-right': position === 'bottom-right',
-      'floating-button--disabled': disabled === true
+      'floating-button--disabled': disabled === true,
     });
     let iconClasses = classnames('fa', `fa-${icon}`);
 
     return (
-      <div
-        className={fbClasses}
-        onClick={this.onClickHandle}>
-        <link rel={'stylesheet'} href={'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'} />
+      <div className={fbClasses} onClick={this.onClickHandle}>
+        <link
+          rel={'stylesheet'}
+          href={'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'}
+        />
         <i className={iconClasses}></i>
       </div>
     );
   };
-
-  onClickHandle = () => {
-    const {onClick, disabled} = this.props;
-
-    if (disabled === true) {
-      return false;
-    }
-
-    onClick();
-  };
 }
+
+FloatingButton.propTypes = propTypes;
+FloatingButton.defaultProps = defaultProps;
+
+export default FloatingButton;

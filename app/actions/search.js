@@ -3,7 +3,7 @@ import {
   SEARCH_TOPICS_REQUESTED,
   SEARCH_TOPICS_SUCCEEDED,
   SEARCH_TOPICS_FAILED,
-  SEARCH_EMPTY_RESULTS
+  SEARCH_EMPTY_RESULTS,
 } from './types';
 
 export const searchTopics = createAction(SEARCH_TOPICS_REQUESTED, query => query);

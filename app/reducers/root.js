@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   search,
   topic,
   app,
-  routing: routerReducer
+  routing: routerReducer,
 });
 
 export default rootReducer;

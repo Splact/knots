@@ -3,42 +3,42 @@ import config from '../constants/config';
 
 class WebApi {
 
-  constructor(config) {
-    this.$ = axios.create(config);
+  constructor(axiosConfig) {
+    this.$ = axios.create(axiosConfig);
     this.bearerToken = null;
   }
 
-  _responseHandler(response) {
+  responseHandler(response) {
     return response.data;
   }
-  _errorHandler(response) {
+  errorHandler(response) {
     let error;
 
     if (response instanceof Error) {
       error = {
         status: 500,
-        message: response.message
+        message: response.message,
       };
     } else if (!response) {
       error = {
         status: 500,
-        message: 'No response received.'
+        message: 'No response received.',
       };
     } else if (response.status >= 400) {
       error = {
         status: response.status,
-        message: response.data.message
+        message: response.data.message,
       };
     }
 
     throw error;
   }
 
-  _needToken = () => {
+  needToken = () => {
     const token = this.bearerToken;
     return new Promise((resolve, reject) => {
       if (token) {
-        resolve({status: 200, data: {}});
+        resolve({ status: 200, data: {} });
       } else {
         reject(new Error('Authentication required.'));
       }
@@ -53,39 +53,37 @@ class WebApi {
         self.$.defaults = Object.assign(self.$.defaults, {
           headers: {
             common: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         self.bearerToken = token;
-        resolve({status: 200, data: {}});
+        resolve({ status: 200, data: {} });
       } catch (e) {
         reject(e);
       }
-    }).then(this._responseHandler).catch (this._errorHandler);
+    }).then(this.responseHandler).catch(this.errorHandler);
   };
 
-  facebookLogin = ({ accessToken }) => {
-    return this.$.request({
-      url: '/login/facebook',
-      method: 'post',
-      data: {
-        'access_token': accessToken
-      }
-    }).then((response) => {
-      this.updateBearerToken({ token: response.data.token });
-      return response;
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
+  facebookLogin = ({ accessToken }) => this.$.request({
+    url: '/login/facebook',
+    method: 'post',
+    data: {
+      access_token: accessToken,
+    },
+  }).then((response) => {
+    this.updateBearerToken({ token: response.data.token });
+    return response;
+  }).then(this.responseHandler)
+    .catch(this.errorHandler);
 
-  searchTopics = ({ q }) => {
-    return this.$.request({
-      url: '/search/topics',
-      method: 'get',
-      params: { q }
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
+  searchTopics = ({ q }) => this.$.request({
+    url: '/search/topics',
+    method: 'get',
+    params: { q },
+  }).then(this.responseHandler)
+    .catch(this.errorHandler);
 
   logout = () => {
     const self = this;
@@ -93,76 +91,69 @@ class WebApi {
       try {
         this.bearerToken = null;
         delete self.$.defaults.headers.common.Authorization;
-        resolve({status: 200, data: {}});
+        resolve({ status: 200, data: {} });
       } catch (e) {
         reject(e);
       }
-    }).then(this._responseHandler).catch (this._errorHandler);
+    })
+      .then(this.responseHandler)
+      .catch(this.errorHandler);
   };
 
   userFetch = ({ username }) => {
     if (!username) {
-      return this._needToken().then(() => {
-        return this.$.request({
-          url: '/users/me',
-          method: 'get'
-        });
-      }).then(this._responseHandler).catch (this._errorHandler);
-    } else {
-      return this.$.request({
-        url: `/users/${username}`,
-        method: 'get'
-      }).then(this._responseHandler).catch (this._errorHandler);
+      return this.needToken().then(() => this.$.request({
+        url: '/users/me',
+        method: 'get',
+      }))
+        .then(this.responseHandler)
+        .catch(this.errorHandler);
     }
-  };
-
-  userUpdatePosition = ({ position }) => {
-    return this._needToken().then(() => {
-      return this.$.request({
-        url: '/users/position',
-        method: 'put',
-        data: { position }
-      });
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
-
-  topicFetchCheckins = ({ tag }) => {
     return this.$.request({
-      url: `/topics/${tag}/checkins`,
-      method: 'get'
-    }).then(this._responseHandler).catch (this._errorHandler);
+      url: `/users/${username}`,
+      method: 'get',
+    }).then(this.responseHandler).catch(this.errorHandler);
   };
 
-  topicCreate = ({ tag }) => {
-    return this._needToken().then(() => {
-      return this.$.request({
-        url: `/topics`,
-        method: 'post',
-        data  : {tag}
-      });
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
+  userUpdatePosition = ({ position }) => this.needToken().then(() => this.$.request({
+    url: '/users/position',
+    method: 'put',
+    data: { position },
+  }))
+    .then(this.responseHandler)
+    .catch(this.errorHandler);
 
-  topicDoCheckin = ({ tag }) => {
-    return this._needToken().then(() => {
-      return this.$.request({
-        url: `/topics/${tag}/checkins`,
-        method: 'put'
-      });
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
+  topicFetchCheckins = ({ tag }) => this.$.request({
+    url: `/topics/${tag}/checkins`,
+    method: 'get',
+  })
+    .then(this.responseHandler)
+    .catch(this.errorHandler);
 
-  topicUndoCheckin = ({ tag }) => {
-    return this._needToken().then(() => {
-      return this.$.request({
-        url: `/topics/${tag}/checkins`,
-        method: 'delete'
-      });
-    }).then(this._responseHandler).catch (this._errorHandler);
-  };
+  topicCreate = ({ tag }) => this.needToken().then(() => this.$.request({
+    url: '/topics',
+    method: 'post',
+    data: { tag },
+  }))
+    .then(this.responseHandler)
+    .catch(this.errorHandler);
+
+  topicDoCheckin = ({ tag }) => this.needToken().then(() => this.$.request({
+    url: `/topics/${tag}/checkins`,
+    method: 'put',
+  }))
+    .then(this.responseHandler)
+    .catch(this.errorHandler);
+
+  topicUndoCheckin = ({ tag }) => this.needToken().then(() => this.$.request({
+    url: `/topics/${tag}/checkins`,
+    method: 'delete',
+  }))
+    .then(this.responseHandler)
+    .catch(this.errorHandler);
 }
 
 const apiConfig = config.api;
 export default new WebApi({
-  baseURL: apiConfig.baseURL
+  baseURL: apiConfig.baseURL,
 });

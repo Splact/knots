@@ -12,7 +12,7 @@ export default (count = defaultCount, basePosition = naplesPosition) => [...Arra
       id: `__fake__${index}`,
       position: {
         lat,
-        lng
-      }
+        lng,
+      },
     };
   });

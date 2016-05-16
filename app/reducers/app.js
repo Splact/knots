@@ -1,18 +1,12 @@
 import { handleActions } from 'redux-actions';
-import {
-  APP_READY
-} from '../actions/types';
+import { APP_READY } from '../actions/types';
 
 const defaultState = {
-  isReady: false
+  isReady: false,
 };
 
 const reducerMap = {
-  [APP_READY]: (state) => {
-    return Object.assign({}, state, {
-      isReady: true
-    });
-  }
+  [APP_READY]: (state) => Object.assign({}, state, { isReady: true }),
 };
 
 export default handleActions(reducerMap, defaultState);

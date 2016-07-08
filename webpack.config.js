@@ -5,7 +5,6 @@ const NpmInstallPlugin = require('npm-install-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const stylelint = require('stylelint');
 
 // Load *package.json* so we can use `dependencies` from there
 const pkg = require('./package.json');
@@ -35,11 +34,6 @@ const common = {
   module: {
     preLoaders: [
       {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: PATHS.app
-      },
-      {
         test: /\.scss$/,
         loaders: ['postcss'],
         include: PATHS.style,
@@ -66,13 +60,6 @@ const common = {
       title: 'Knots',
       appMountId: 'knots',
       inject: false,
-    }),
-  ],
-  postcss: () => [
-    stylelint({
-      rules: {
-        'color-hex-case': 'lower',
-      },
     }),
   ],
 };

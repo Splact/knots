@@ -26,6 +26,7 @@ export default {
   map: {
     // accessToken: 'pk.eyJ1Ijoic3BsYWN0IiwiYSI6ImNpbGxoN2V6dDAwYTJvYmtxb2JvOXdjdnUifQ.tHa07LPKzQ3'+
     // 'GCkZDTH_iuw',
+    showFakeMarkers: !isProd,
     key: 'AIzaSyDjCqTlTc4W7pZfj-oWkchu9Hu3rxsXvVQ',
     options: {
       minZoom: 3,

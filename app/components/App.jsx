@@ -48,7 +48,7 @@ class App extends React.Component {
         <Profile />
         <SearchBox />
         <CheckinButton />
-        <Map options={config.map.options} apiKey={config.map.key} showFakeMarkers />
+        <Map options={config.map.options} apiKey={config.map.key} showFakeMarkers={config.map.showFakeMarkers} />
         <AjaxLoader />
       </div>
     );

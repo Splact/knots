@@ -4,7 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const apiDevUrl = 'http://api.server.dev:3000/v1';
 const apiProdUrl = 'http://api.arrray.com:8888/v1';
-const apiUrl = (isProd) ? apiProdUrl : apiDevUrl; 
+const apiUrl = (isProd) ? apiProdUrl : apiDevUrl;
 
 export default {
   localforage: {
@@ -15,7 +15,7 @@ export default {
     description: 'Persistent storage for Knots Balloons',
   },
   api: {
-    baseURL: apiUrl
+    baseURL: apiUrl,
   },
   profile: {
     defaultPicture: 'https://randomuser.me/api/portraits/med/women/78.jpg',
@@ -26,6 +26,7 @@ export default {
   map: {
     // accessToken: 'pk.eyJ1Ijoic3BsYWN0IiwiYSI6ImNpbGxoN2V6dDAwYTJvYmtxb2JvOXdjdnUifQ.tHa07LPKzQ3'+
     // 'GCkZDTH_iuw',
+    key: 'AIzaSyDjCqTlTc4W7pZfj-oWkchu9Hu3rxsXvVQ',
     options: {
       minZoom: 3,
       maxZoom: 10,
@@ -45,7 +46,7 @@ export default {
           lng: -175,
         },
       },
-      styles: mapStyles
-    }
-  }
+      styles: mapStyles,
+    },
+  },
 };

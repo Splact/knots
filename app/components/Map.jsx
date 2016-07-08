@@ -22,6 +22,7 @@ const propTypes = {
   title: PropTypes.string,
   showFakeMarkers: PropTypes.bool,
   markers: PropTypes.array,
+  apiKey: PropTypes.string,
 };
 const defaultProps = {};
 
@@ -50,9 +51,9 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 class Map extends React.Component {
 
-  static version = 22;
+  static version = 23;
 
-  constructor({ ...props }) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -111,7 +112,7 @@ class Map extends React.Component {
   handleMarkerRightclick = () => null;
 
   render = () => {
-    const { options, title, showFakeMarkers, ...props } = this.props;
+    const { options, apiKey, title, showFakeMarkers, ...props } = this.props;
     const { defaultZoom, defaultCenter } = options;
     const { center } = this.state;
     let { markers } = this.props;
@@ -133,9 +134,9 @@ class Map extends React.Component {
       <ScriptjsLoader
         hostname={'maps.googleapis.com'}
         pathname={'/maps/api/js'}
-        query={{ v: `3.${Map.version}`, libraries: 'geometry,drawing,places' }}
+        query={{ key: apiKey, v: `3.${Map.version}`, libraries: 'geometry,drawing,places' }}
         loadingElement={
-          <div {...props} style={{ height: `100%` }}>
+          <div {...props} style={{ height: '100%' }}>
             Loading...
           </div>
         }

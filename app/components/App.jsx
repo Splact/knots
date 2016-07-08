@@ -34,11 +34,6 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 class App extends React.Component {
 
-  propTypes: {
-    params: React.PropTypes.object,
-    onTopicFetch: React.PropTypes.func
-  }
-
   componentWillMount() {
     const { params, onTopicFetch } = this.props;
     const { topic } = params;
@@ -47,14 +42,13 @@ class App extends React.Component {
 
   render = () => {
     const wrapperClasses = classnames('knots-wrapper');
-
     return (
       <div className={wrapperClasses}>
         <FacebookButton />
         <Profile />
         <SearchBox />
         <CheckinButton />
-        <Map options={config.map.options} showFakeMarkers />
+        <Map options={config.map.options} apiKey={config.map.key} showFakeMarkers />
         <AjaxLoader />
       </div>
     );

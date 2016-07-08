@@ -14,7 +14,12 @@ import userSagas from '../sagas/user';
 import rootReducer from '../reducers/root';
 
 // Setup sagas
-const sagaMiddleware = createSagaMiddleware(...startSagas, ...userSagas, ...searchSagas, ...topicSagas);
+const sagaMiddleware = createSagaMiddleware(
+  ...startSagas,
+  ...userSagas,
+  ...searchSagas,
+  ...topicSagas
+);
 
 // Setup storage engine and middleware
 const engine = createEngine(config.localforage.key, config.localforage);

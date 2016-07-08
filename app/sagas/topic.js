@@ -4,7 +4,7 @@ import {
   TOPIC_FETCH_REQUESTED,
   TOPIC_CREATE_REQUESTED,
   TOPIC_DO_CHECKIN_REQUESTED,
-  TOPIC_UNDO_CHECKIN_REQUESTED
+  TOPIC_UNDO_CHECKIN_REQUESTED,
 } from '../actions/types';
 import {
   createSucceeded,
@@ -14,12 +14,12 @@ import {
   doCheckinSucceeded,
   doCheckinFailed,
   undoCheckinSucceeded,
-  undoCheckinFailed
+  undoCheckinFailed,
 } from '../actions/topic';
 import webApi from '../libs/webApi';
 
 // Worker Saga : will be fired on TOPIC_FETCH_REQUESTED actions
-const topicFetch = function*(action) {
+const topicFetch = function* topicFetch(action) {
   try {
     // Fetch topic
     const topicFetchCheckinsParams = { tag: action.payload };
@@ -28,7 +28,7 @@ const topicFetch = function*(action) {
     // Update store topic
     yield put(fetchSucceeded({
       tag: action.payload,
-      checkins
+      checkins,
     }));
   } catch (error) {
     yield put(fetchFailed(error));
@@ -36,7 +36,7 @@ const topicFetch = function*(action) {
 };
 
 // Worker Saga : will be fired on TOPIC_CREATE_REQUESTED actions
-const topicCreate = function*(action) {
+const topicCreate = function* topicCreate(action) {
   try {
     // Create topic
     const topicCreateParams = { tag: action.payload };
@@ -45,7 +45,7 @@ const topicCreate = function*(action) {
     // Update store topic
     yield put(createSucceeded({
       tag: action.payload,
-      checkins
+      checkins,
     }));
   } catch (error) {
     yield put(createFailed(error));
@@ -53,7 +53,7 @@ const topicCreate = function*(action) {
 };
 
 // Worker Saga : will be fired on TOPIC_DO_CHECKIN_REQUESTED actions
-const topicDoCheckin = function*(action) {
+const topicDoCheckin = function* topicDoCheckin(action) {
   try {
     // Do Checkin
     const topicDoCheckinParams = { tag: action.payload };
@@ -67,7 +67,7 @@ const topicDoCheckin = function*(action) {
 };
 
 // Worker Saga : will be fired on TOPIC_UNDO_CHECKIN_REQUESTED actions
-const topicUndoCheckin = function*(action) {
+const topicUndoCheckin = function* topicUndoCheckin(action) {
   try {
     // Undo Checkin
     const topicUndoCheckinParams = { tag: action.payload };
@@ -81,16 +81,16 @@ const topicUndoCheckin = function*(action) {
 };
 
 // Watchers Sagas
-export const topicFetchSaga = function*() {
+export const topicFetchSaga = function* topicFetchSaga() {
   yield* takeLatest(TOPIC_FETCH_REQUESTED, topicFetch);
 };
-export const topicCreateSaga = function*() {
+export const topicCreateSaga = function* topicCreateSaga() {
   yield* takeLatest(TOPIC_CREATE_REQUESTED, topicCreate);
 };
-export const topicDoCheckinSaga = function*() {
+export const topicDoCheckinSaga = function* topicDoCheckinSaga() {
   yield* takeLatest(TOPIC_DO_CHECKIN_REQUESTED, topicDoCheckin);
 };
-export const topicUndoCheckinSaga = function*() {
+export const topicUndoCheckinSaga = function* topicUndoCheckinSaga() {
   yield* takeLatest(TOPIC_UNDO_CHECKIN_REQUESTED, topicUndoCheckin);
 };
 
@@ -98,5 +98,5 @@ export default [
   topicFetchSaga,
   topicCreateSaga,
   topicDoCheckinSaga,
-  topicUndoCheckinSaga
+  topicUndoCheckinSaga,
 ];

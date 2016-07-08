@@ -11,7 +11,7 @@ import {
   TOPIC_DO_CHECKIN_FAILED,
   TOPIC_UNDO_CHECKIN_REQUESTED,
   TOPIC_UNDO_CHECKIN_SUCCEEDED,
-  TOPIC_UNDO_CHECKIN_FAILED
+  TOPIC_UNDO_CHECKIN_FAILED,
 } from './types';
 
 export const create = createAction(TOPIC_CREATE_REQUESTED, tag => tag);
@@ -27,5 +27,8 @@ export const doCheckinSucceeded = createAction(TOPIC_DO_CHECKIN_SUCCEEDED, check
 export const doCheckinFailed = createAction(TOPIC_DO_CHECKIN_FAILED, error => error);
 
 export const undoCheckin = createAction(TOPIC_UNDO_CHECKIN_REQUESTED, tag => tag);
-export const undoCheckinSucceeded = createAction(TOPIC_UNDO_CHECKIN_SUCCEEDED, checkins => checkins);
+export const undoCheckinSucceeded = createAction(
+  TOPIC_UNDO_CHECKIN_SUCCEEDED,
+  checkins => checkins
+);
 export const undoCheckinFailed = createAction(TOPIC_UNDO_CHECKIN_FAILED, error => error);

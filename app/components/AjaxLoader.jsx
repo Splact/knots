@@ -1,6 +1,13 @@
-import React from 'react';
+/* eslint "react/prefer-stateless-function": "off" */
+
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+
+const propTypes = {
+  pendingStates: PropTypes.object,
+};
+const defaultProps = {};
 
 function mapStateToProps(state) {
   const { user, topic, search, app } = state;
@@ -14,19 +21,19 @@ function mapStateToProps(state) {
       isCreatingTopic: topic.isCreating,
       isFetchingTopic: topic.isFetching,
       isSearching: search.isSearching,
-      isAppNotReady: !app.isReady
-    }
+      isAppNotReady: !app.isReady,
+    },
   };
 }
 
 @connect(mapStateToProps)
-export default class AjaxLoader extends React.Component {
+class AjaxLoader extends React.Component {
   render = () => {
     const { pendingStates } = this.props;
     const arrayStates = Object.values(pendingStates);
 
     let loaderClasses = classnames('ajax-loader', {
-      'ajax-loader--loading': arrayStates.some((pendingState) => pendingState === true)
+      'ajax-loader--loading': arrayStates.some((pendingState) => pendingState === true),
     });
 
     return (
@@ -34,3 +41,8 @@ export default class AjaxLoader extends React.Component {
     );
   };
 }
+
+AjaxLoader.propTypes = propTypes;
+AjaxLoader.defaultProps = defaultProps;
+
+export default AjaxLoader;

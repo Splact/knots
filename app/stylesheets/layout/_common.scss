@@ -1,3 +1,9 @@
 .knots-wrapper {
   height: 100vh;
+  transition: all .75s ease-out;
+
+  &.de-emphasized {
+    filter: blur(3px);
+  }
 }
+

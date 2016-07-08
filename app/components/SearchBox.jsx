@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint "react/prefer-stateless-function": "off" */
+
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Prompt from './Prompt';
@@ -8,13 +10,23 @@ import { searchTopics, emptyResults } from '../actions/search';
 import { fetch, create } from '../actions/topic';
 import parseQueryToTag from '../libs/parseQueryToTag';
 
+const propTypes = {
+  results: PropTypes.array,
+  query: PropTypes.string,
+  isSearching: PropTypes.bool,
+  onResultClick: PropTypes.func,
+  onTopicCreation: PropTypes.func,
+  onQueryChange: PropTypes.func,
+};
+const defaultProps = {};
+
 function mapStateToProps(state) {
   const { results, query, isSearching } = state.search;
 
   return {
     results,
     query,
-    isSearching
+    isSearching,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -40,25 +52,31 @@ function mapDispatchToProps(dispatch) {
       } else {
         dispatch(searchTopics(newText));
       }
-    }
+    },
   };
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class SearchBox extends React.Component {
+class SearchBox extends React.Component {
 
   render = () => {
-
-    const { results, query, isSearching, onResultClick, onTopicCreation, onQueryChange } = this.props;
+    const {
+      results,
+      query,
+      isSearching,
+      onResultClick,
+      onTopicCreation,
+      onQueryChange,
+    } = this.props;
 
     // defining element css classes
     const styles = {
       searchBox: classnames('search-box'),
       results: classnames({
         'search-box--results': true,
-        'search-box--results--hidden': !query
+        'search-box--results--hidden': !query,
       }),
-      pendingSearch: classnames('search-box--pending-search')
+      pendingSearch: classnames('search-box--pending-search'),
     };
 
     const sanitizedTag = parseQueryToTag(query);
@@ -74,7 +92,8 @@ export default class SearchBox extends React.Component {
             key={result.tag}
             tag={result.tag}
             checkinsCount={result.usersCount}
-            onClick={resultClickHandler} />
+            onClick={resultClickHandler}
+          />
         );
       });
     } else if (query && !isSearching) {
@@ -83,7 +102,8 @@ export default class SearchBox extends React.Component {
           key={query}
           tag={sanitizedTag}
           isCreate
-          onClick={topicCreationHandler} />
+          onClick={topicCreationHandler}
+        />
       );
     }
 
@@ -95,9 +115,15 @@ export default class SearchBox extends React.Component {
           icon={'search'}
           onChange={queryChangeHandler}
           onEnter={topicCreationHandler}
-          empty={true} />
+          empty
+        />
         <ul className={styles.results}>{ulChildren}</ul>
       </div>
     );
   };
 }
+
+SearchBox.propTypes = propTypes;
+SearchBox.defaultProps = defaultProps;
+
+export default SearchBox;

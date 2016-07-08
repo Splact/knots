@@ -14,7 +14,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 ReactDOM.render((
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/(:topic)" component={App}/>
+      <Route path="/(:topic)" component={App} />
     </Router>
   </Provider>
 ), document.getElementById('knots'));

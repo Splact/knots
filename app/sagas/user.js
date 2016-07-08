@@ -4,7 +4,7 @@ import {
   USER_LOGIN_REQUESTED,
   USER_LOGOUT_REQUESTED,
   USER_UPDATE_POSITION_REQUESTED,
-  USER_FETCH_REQUESTED
+  USER_FETCH_REQUESTED,
 } from '../actions/types';
 import {
   loginSucceeded,
@@ -15,14 +15,15 @@ import {
   updatePositionFailed,
   fetch,
   fetchSucceeded,
-  fetchFailed
+  fetchFailed,
 } from '../actions/user';
 import webApi from '../libs/webApi';
 
 // Worker Saga : will be fired on USER_LOGIN_REQUESTED actions
-const userLogin = function*(action) {
+const userLogin = function* userLogin(action) {
   try {
-    // Using facebook access token try to login user retrieving a bearer token for the following requests
+    // Using facebook access token try to login user retrieving a bearer token for the following
+    // requests
     const userLoginParams = { accessToken: action.payload };
     const { token } = yield call(webApi.facebookLogin, userLoginParams);
 
@@ -37,7 +38,7 @@ const userLogin = function*(action) {
 };
 
 // Worker Saga : will be fired on USER_LOGOUT_REQUESTED actions
-const userLogout = function*() {
+const userLogout = function* userLogout() {
   try {
     // Logout the user
     yield call(webApi.logout);
@@ -50,7 +51,7 @@ const userLogout = function*() {
 };
 
 // Worker Saga : will be fired on USER_UPDATE_POSITION_REQUESTED actions
-const userUpdatePosition = function*(action) {
+const userUpdatePosition = function* userUpdatePosition(action) {
   try {
     // Update remote user position
     const userUpdatePositionParams = { position: action.payload };
@@ -64,7 +65,7 @@ const userUpdatePosition = function*(action) {
 };
 
 // Worker Saga : will be fired on USER_FETCH_REQUESTED actions
-const userFetch = function*(action) {
+const userFetch = function* userFetch(action) {
   try {
     // Fetch user
     const userFetchParams = { position: action.payload };
@@ -78,16 +79,16 @@ const userFetch = function*(action) {
 };
 
 // Watchers Sagas
-export const userLoginSaga = function*() {
+export const userLoginSaga = function* userLoginSaga() {
   yield* takeLatest(USER_LOGIN_REQUESTED, userLogin);
 };
-export const userLogoutSaga = function*() {
+export const userLogoutSaga = function* userLogoutSaga() {
   yield* takeLatest(USER_LOGOUT_REQUESTED, userLogout);
 };
-export const userUpdatePositionSaga = function*() {
+export const userUpdatePositionSaga = function* userUpdatePositionSaga() {
   yield* takeLatest(USER_UPDATE_POSITION_REQUESTED, userUpdatePosition);
 };
-export const userFetchSaga = function*() {
+export const userFetchSaga = function* userFetchSaga() {
   yield* takeLatest(USER_FETCH_REQUESTED, userFetch);
 };
 
@@ -95,5 +96,5 @@ export default [
   userLoginSaga,
   userLogoutSaga,
   userUpdatePositionSaga,
-  userFetchSaga
+  userFetchSaga,
 ];

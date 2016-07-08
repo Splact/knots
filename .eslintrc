@@ -12,12 +12,15 @@
   "rules": {
     "no-console": 0,
     "new-cap": 0,
+    "curly": 2,
+    "wrap-iife": [2, "outside"],
+    "max-len": [1, 120],
+    "indent": [2, 2],
     "strict": 0,
     "no-underscore-dangle": 0,
     "no-use-before-define": 0,
     "eol-last": 0,
     "quotes": [2, "single"],
-    "jsx-quotes": 1,
     "react/jsx-no-undef": 1,
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1

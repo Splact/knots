@@ -39,30 +39,43 @@
   color: $text-color;
 
   @if $lined {
-    $hover-background-color: $border-color;
-    $hover-text-color: white;
-  } @else {
-    $hover-background-color: $background-color;
-    $hover-text-color: $text-color;
+    &:hover,
+    &:focus {
+      $lighten-background-color: lighten($border-color, 5%);
+      $lighten-border-color: lighten($border-color, 5%);
+      background: $lighten-background-color;
+      border-color: $lighten-border-color;
+      color: white;
+    }
+
+    &:active,
+    &.active {
+      $darken-background-color: darken($border-color, 5%);
+      $darken-border-color: darken($border-color, 5%);
+      background: $darken-background-color;
+      border-color: $darken-border-color;
+      color: white;
+    }
+  } @else {    
+    &:hover,
+    &:focus {
+      $lighten-background-color: lighten($background-color, 5%);
+      $lighten-border-color: lighten($border-color, 5%);
+      background: $lighten-background-color;
+      border-color: $lighten-border-color;
+      color: $text-color;
+    }
+
+    &:active,
+    &.active {
+      $darken-background-color: darken($background-color, 5%);
+      $darken-border-color: darken($border-color, 5%);
+      background: $darken-background-color;
+      border-color: $darken-border-color;
+      color: $text-color;
+    }
   }
 
-  &:hover,
-  &:focus {
-    $lighten-background-color: lighten($hover-background-color, 5%);
-    $lighten-border-color: lighten($border-color, 5%);
-    background: $lighten-background-color;
-    border-color: $lighten-border-color;
-    color: $hover-text-color;
-  }
-
-  &:active,
-  &.active {
-    $darken-background-color: darken($hover-background-color, 5%);
-    $darken-border-color: darken($border-color, 5%);
-    background: $darken-background-color;
-    border-color: $darken-border-color;
-    color: $hover-text-color;
-  }
 }
 
 /// Helper to create a button color
@@ -75,25 +88,25 @@
   background: $background-color;
   border-color: $border-color;
 
-
-
-  @if $lined {
-    $hover-background-color: $border-color;
-    $hover-text-color: white;
-  } @else {
-    $hover-background-color: $background-color;
-    $hover-text-color: $text-color;
-  }
-
   > input {
     color: $text-color;
 
-    &:focus {
-      $lighten-background-color: lighten($hover-background-color, 5%);
-      $lighten-border-color: lighten($border-color, 5%);
-      background: $lighten-background-color;
-      border-color: $lighten-border-color;
-      color: $hover-text-color;
+    @if $lined {
+      &:focus {
+        $lighten-background-color: lighten($border-color, 5%);
+        $lighten-border-color: lighten($border-color, 5%);
+        background: $lighten-background-color;
+        border-color: $lighten-border-color;
+        color: white;
+      }
+    } @else {
+      &:focus {
+        $lighten-background-color: lighten($background-color, 5%);
+        $lighten-border-color: lighten($border-color, 5%);
+        background: $lighten-background-color;
+        border-color: $lighten-border-color;
+        color: $text-color;
+      }
     }
   }
 }

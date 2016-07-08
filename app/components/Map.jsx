@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { default as FaSpinner } from 'react-icons/lib/fa/spinner';
 import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsLoader';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { default as MarkerClusterer } from 'react-google-maps/lib/addons/MarkerClusterer';
@@ -101,15 +100,7 @@ export default class Map extends React.Component {
         query={{ v: `3.${ Map.version }`, libraries: `geometry,drawing,places` }}
         loadingElement={
           <div {...props} style={{ height: `100%` }}>
-            <FaSpinner
-              style={{
-                display: 'block',
-                width: 200,
-                height: 200,
-                margin: '100px auto',
-                animation: 'fa-spin 2s infinite linear'
-              }}
-            />
+            Loading...
           </div>
         }
         containerElement={
